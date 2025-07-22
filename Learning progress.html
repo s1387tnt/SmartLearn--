@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLearn - 學習階段進度</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm px-6 py-4">
+        <div class="flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-900">SmartLearn</div>
+            <nav class="flex items-center space-x-8">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 border-2 border-gray-400 rounded flex items-center justify-center">
+                        <span class="text-sm">II</span>
+                    </div>
+                </div>
+                <a href="#" class="text-gray-700 hover:text-gray-900 font-medium">行事曆</a>
+                <a href="#" class="text-gray-700 hover:text-gray-900 font-medium">學習筆記</a>
+                <a href="#" class="text-gray-700 hover:text-gray-900 font-medium bg-gray-200 px-3 py-2 rounded">學習進度</a>
+                <a href="#" class="text-gray-700 hover:text-gray-900 font-medium">學習測驗</a>
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-pink-200 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-6 py-8">
+        <div class="flex">
+            <!-- Left Sidebar -->
+            <div class="w-40 mr-16">
+                <h2 class="text-lg font-bold text-gray-900 mb-8">學習階段:</h2>
+                
+                <div class="space-y-6 text-sm text-gray-700">
+                    <div>目標設定</div>
+                    <div>資源蒐集</div>
+                    <div>第一階段學習</div>
+                    <div>自我測驗</div>
+                    <div>第二階段學習</div>
+                    <div>總結複習</div>
+                    <div>模擬測驗</div>
+                    <div>檢討修正</div>
+                    <div>分享成果</div>
+                    <div>結業評估</div>
+                </div>
+            </div>
+
+            <!-- Progress Bars Section -->
+            <div class="flex-1">
+                <div class="space-y-4">
+                    <!-- 目標設定 -->
+                    <div class="flex items-center">
+                        <div class="w-48 h-6 bg-gray-400 rounded-full"></div>
+                    </div>
+
+                    <!-- 資源蒐集 -->
+                    <div class="flex items-center">
+                        <div class="w-40 h-6 bg-gray-400 rounded-full"></div>
+                    </div>
+
+                    <!-- 第一階段學習 -->
+                    <div class="flex items-center">
+                        <div class="w-56 h-6 bg-gray-400 rounded-full"></div>
+                    </div>
+
+                    <!-- 自我測驗 -->
+                    <div class="flex items-center">
+                        <div class="w-72 h-6 bg-gray-400 rounded-full"></div>
+                    </div>
+
+                    <!-- 第二階段學習 -->
+                    <div class="flex items-center">
+                        <div class="w-80 h-6 bg-gray-400 rounded-full"></div>
+                    </div>
+
+                    <!-- 總結複習 -->
+                    <div class="flex items-center">
+                        <div class="w-44 h-6 bg-gray-400 rounded-full"></div>
+                    </div>
+
+                    <!-- 模擬測驗 (有箭頭指向) -->
+                    <div class="flex items-center relative">
+                        <div class="w-64 h-6 bg-gray-400 rounded-full"></div>
+                        <svg class="absolute -right-12 top-0 w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </div>
+
+                    <!-- 檢討修正 -->
+                    <div class="flex items-center">
+                        <div class="w-88 h-6 bg-gray-400 rounded-full"></div>
+                    </div>
+
+                    <!-- 分享成果 -->
+                    <div class="flex items-center">
+                        <div class="w-96 h-6 bg-gray-400 rounded-full"></div>
+                    </div>
+
+                    <!-- 結業評估 -->
+                    <div class="flex items-center">
+                        <div class="w-52 h-6 bg-gray-400 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side -->
+            <div class="w-64 ml-8">
+                <div class="text-right">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">本週的學習進度</h3>
+                    <div class="mt-32">
+                        <p class="text-sm text-gray-600">計畫助你修改的</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 進度條動畫效果
+            const progressBars = document.querySelectorAll('.bg-gray-400');
+            
+            progressBars.forEach((bar, index) => {
+                setTimeout(() => {
+                    bar.style.opacity = '0';
+                    bar.style.transform = 'scaleX(0)';
+                    bar.style.transformOrigin = 'left';
+                    bar.style.transition = 'all 0.6s ease';
+                    
+                    setTimeout(() => {
+                        bar.style.opacity = '1';
+                        bar.style.transform = 'scaleX(1)';
+                    }, 100);
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>

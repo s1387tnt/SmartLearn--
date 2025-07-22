@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>簡介</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 h-screen flex">
+    <!-- 側邊欄 -->
+    <div class="w-24 bg-gray-200 flex flex-col">
+        <!-- Logo區域 -->
+        <div class="h-12 bg-gray-300 mb-1"></div>
+
+        <!-- 導航項目 -->
+        <div class="flex-1 space-y-1">
+            <div class="bg-white text-center py-2 text-sm font-medium text-gray-700 border-r-2 border-blue-500">
+                基本資料
+            </div>
+            <div class="text-center py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 cursor-pointer">
+                自訂簡介
+            </div>
+            <div class="text-center py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 cursor-pointer">
+                修改資料
+            </div>
+            <div class="text-center py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 cursor-pointer">
+                重設密碼
+            </div>
+        </div>
+
+        <!-- 底部返回按鈕 -->
+        <div class="p-2">
+            <button class="w-6 h-6 bg-black rounded flex items-center justify-center hover:bg-gray-800 cursor-pointer">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- 主內容區 -->
+    <div class="flex-1" style="background-color: 
+#e6f3ff;">
+        <!-- 標題 -->
+        <div class="text-center py-4">
+            <h1 class="text-2xl font-bold text-gray-800">簡介</h1>
+        </div>
+
+        <!-- 內容區域 -->
+        <div class="flex flex-col items-center mt-8">
+            <!-- 用戶頭像 -->
+            <div class="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mb-4 overflow-hidden">
+                <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </div>
+
+            <!-- 用戶信息 -->
+            <div style="background-color: 
+#cce7ff;" class="px-8 py-2 rounded">
+                <p class="text-gray-800 text-sm">XXX先生/小姐，歡迎使用</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
