@@ -1,7 +1,36 @@
 let currentSubjectIndex = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
-  // 📌 [1] 科目按鈕左右切換 + 點擊跳轉
+  // 📌 [0] 用戶下拉選單功能
+  const profileButton = document.querySelector(".profile-button");
+  const dropdownMenu = document.querySelector(".dropdown-menu");
+
+  if (profileButton && dropdownMenu) {
+    profileButton.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle("show");
+    });
+
+    // 點擊其他地方關閉下拉選單
+    document.addEventListener("click", () => {
+      dropdownMenu.classList.remove("show");
+    });
+
+    // 防止點擊下拉選單內容時關閉
+    dropdownMenu.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+
+    // 下拉選單項目點擊事件
+    const dropdownItems = document.querySelectorAll(".dropdown-item");
+    dropdownItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        console.log(`點擊了: ${item.textContent}`);
+        dropdownMenu.classList.remove("show");
+      });
+    });
+  }
+
   const subjectButton = document.querySelector(".subject-button");
   const arrowButtons = document.querySelectorAll(".arrow-button");
 
@@ -64,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className =
         "bg-white rounded-xl shadow-sm aspect-[4/3] p-4 flex flex-col justify-between";
 
-      // ✅ 只保留底部按鈕，移除刪除與輸入區塊
       card.innerHTML = `
         <div class="flex-1"></div>
         <button class="gantt-title-btn w-full bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 rounded-b-xl transition">
@@ -72,7 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </button>
       `;
 
-      // ✅ 點擊跳轉
       const titleBtn = card.querySelector(".gantt-title-btn");
       titleBtn.addEventListener("click", () => {
         const encodedTitle = encodeURIComponent(title);
