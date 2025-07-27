@@ -1,200 +1,522 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartLearn - 行事曆</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartLearn</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Microsoft JhengHei", sans-serif;
+        background-color: #f0f0f0;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #e8e8e8;
+        border-radius: 15px;
+        padding: 20px;
+        position: relative;
+        min-height: 100vh;
+      }
+
+      /* Header */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+        padding: 10px 15px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        border: none;
+        background: none;
+      }
+
+      .logo:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        transform: translateY(-1px);
+      }
+
+      .nav-menu {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        margin-left: auto;
+        margin-right: 50px;
+      }
+
+      .nav-item {
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 15px;
+        border-radius: 8px;
+        transition: background-color 0.3s;
+      }
+
+      .nav-item:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .user-profile {
+        position: relative;
+      }
+
+      .profile-button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        cursor: pointer;
+        border: none;
+        transition: background-color 0.3s;
+      }
+
+      .profile-button:hover {
+        background-color: #777;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        min-width: 150px;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+      }
+
+      .dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-item {
+        padding: 12px 16px;
+        cursor: pointer;
+        border-bottom: 1px solid #f0f0f0;
+        transition: background-color 0.3s;
+      }
+
+      .dropdown-item:hover {
+        background-color: #f5f5f5;
+      }
+
+      .dropdown-item:last-child {
+        border-bottom: none;
+      }
+
+      /* Main Content */
+      .main-content {
+        display: grid;
+        grid-template-columns: 180px 1fr 320px;
+        gap: 30px;
+        align-items: start;
+        min-height: calc(100vh - 200px);
+      }
+
+      /* Left Sidebar - Class Progress */
+      .left-sidebar {
+        position: relative;
+        height: 100%;
+      }
+
+      .class-card {
+        background-color: white;
+        border-radius: 15px;
+        padding: 30px 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .shop-button {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background-color: #ff6b35;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 15px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        z-index: 100;
+      }
+
+      .shop-button:hover {
+        background-color: #e55a2b;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .shop-button:active {
+        transform: translateY(0);
+      }
+
+      .class-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #f0f0f0;
+        border: 3px solid #ddd;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #666;
+        font-size: 14px;
+      }
+
+      .class-progress {
+        margin-top: 15px;
+      }
+
+      .progress-text {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 15px;
+        font-weight: 500;
+      }
+
+      .progress-bar {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+
+      .progress-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: #ddd;
+      }
+
+      .progress-dot.active {
+        background-color: #4caf50;
+      }
+
+      .progress-label {
+        font-size: 13px;
+        color: #999;
+        margin-top: 5px;
+      }
+
+      /* Center - Calendar and Game */
+      .center-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 100%;
+      }
+
+      .game-banner {
+        background: linear-gradient(45deg, #8b4513, #d2b48c);
+        border-radius: 15px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: white;
+        min-height: 80px;
+      }
+
+      .game-character {
+        width: 50px;
+        height: 50px;
+        background-color: #d2691e;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+      }
+
+      .bananas {
+        display: flex;
+        gap: 10px;
+      }
+
+      .banana {
+        width: 30px;
+        height: 40px;
+        background-color: #ffd700;
+        border-radius: 15px 15px 5px 5px;
+        position: relative;
+      }
+
+      .banana::before {
+        content: "";
+        position: absolute;
+        top: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 8px;
+        height: 10px;
+        background-color: #8b4513;
+        border-radius: 2px;
+      }
+
+      .calendar {
+        background-color: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      .calendar-nav {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .calendar-nav:hover {
+        background-color: #f0f0f0;
+      }
+
+      .calendar-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        text-align: center;
+        flex: 1;
+      }
+
+      .calendar-day-header {
+        font-weight: bold;
+        color: #666;
+        padding: 15px 0;
+        font-size: 16px;
+      }
+
+      .calendar-day {
+        padding: 15px 8px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 45px;
+      }
+
+      .calendar-day:hover {
+        background-color: #f0f0f0;
+      }
+
+      .calendar-day.today {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .calendar-day.selected {
+        background-color: #2196f3;
+        color: white;
+      }
+
+      .calendar-day.next-month {
+        color: #ccc;
+      }
+
+      /* Right Sidebar */
+      .right-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 100%;
+      }
+
+      .widget {
+        background-color: white;
+        border-radius: 15px;
+        padding: 35px;
+        flex: 1;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 150px;
+      }
+
+      .widget:last-child {
+        position: relative;
+      }
+
+      .more-button {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background-color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 16px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        z-index: 100;
+      }
+
+      .more-button:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+      }
+
+      .menu-dots {
+        font-size: 20px;
+        color: #666;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .main-content {
+          grid-template-columns: 1fr;
+          gap: 20px;
         }
+
+        .nav-menu {
+          display: none;
+        }
+      }
     </style>
-</head>
-<body class="bg-gray-100 min-h-screen">
-    <!-- Header -->
-    <header class="bg-white shadow-sm px-6 py-4">
-        <div class="flex justify-between items-center">
-            <div class="text-2xl font-bold text-gray-900">SmartLearn</div>
-            <nav class="flex items-center space-x-8">
-                <div class="flex items-center space-x-2">
-                    <div class="w-8 h-8 border-2 border-gray-400 rounded flex items-center justify-center">
-                        <span class="text-sm">II</span>
-                    </div>
-                </div>
-                <a href="#" class="text-gray-700 hover:text-gray-900 font-medium bg-gray-200 px-3 py-2 rounded">行事曆</a>
-                <a href="#" class="text-gray-700 hover:text-gray-900 font-medium">學習筆記</a>
-                <a href="#" class="text-gray-700 hover:text-gray-900 font-medium">學習進度</a>
-                <a href="#" class="text-gray-700 hover:text-gray-900 font-medium">學習測驗</a>
-                <div class="flex items-center space-x-2">
-                    <div class="w-10 h-10 bg-pink-200 rounded-full flex items-center justify-center">
-                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                    </div>
-                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </div>
-            </nav>
+  </head>
+  <div class="container">
+      <header class="header">
+        <button class="logo" onclick="window.location.reload()">SmartLearn</button>
+        <nav class="nav-menu">
+          <a href="#" class="nav-item">行事曆</a>
+          <a href="#" class="nav-item">學習筆記</a>
+          <a href="#" class="nav-item">學習進度</a>
+          <a href="#" class="nav-item">學習測驗</a>
+        </nav>
+        <div class="user-profile">
+          <button class="profile-button">👤</button>
+          <div class="dropdown-menu">
+            <div class="dropdown-item">個人資料</div>
+            <div class="dropdown-item">設定</div>
+            <div class="dropdown-item">說明</div>
+            <div class="dropdown-item">登出</div>
+          </div>
         </div>
-    </header>
+      </header>
 
-    <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-6 py-8">
-        <!-- Calendar Header -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-            <div class="flex items-center justify-between mb-6">
-                <button class="p-2 hover:bg-gray-100 rounded">
-                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                </button>
-                <h2 class="text-2xl font-bold text-gray-900">2025年 五月</h2>
-                <button class="p-2 hover:bg-gray-100 rounded">
-                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </button>
+      <main class="main-content">
+        <aside class="left-sidebar">
+          <div class="class-card">
+            <div class="class-icon">Class A</div>
+            <div class="class-progress">
+              <div class="progress-text">好友列表</div>
+              <div class="progress-bar">
+                <div class="progress-dot active"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+              </div>
+              <div class="progress-label">Progress</div>
             </div>
+          </div>
+        </aside>
 
-            <!-- Calendar Grid -->
-            <div class="grid grid-cols-7 gap-4 mb-4">
-                <!-- Day Headers -->
-                <div class="text-center font-medium text-gray-600 py-3">日</div>
-                <div class="text-center font-medium text-gray-600 py-3">一</div>
-                <div class="text-center font-medium text-gray-600 py-3">二</div>
-                <div class="text-center font-medium text-gray-600 py-3">三</div>
-                <div class="text-center font-medium text-gray-600 py-3">四</div>
-                <div class="text-center font-medium text-gray-600 py-3">五</div>
-                <div class="text-center font-medium text-gray-600 py-3">六</div>
-
-                <!-- Calendar Days -->
-                <!-- Row 1 -->
-                <div class="h-12 flex items-center justify-center"></div>
-                <div class="h-12 flex items-center justify-center"></div>
-                <div class="h-12 flex items-center justify-center"></div>
-                <div class="h-12 flex items-center justify-center"></div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">1</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">2</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">3</div>
-
-                <!-- Row 2 -->
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">4</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">5</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">6</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">7</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">8</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">9</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">10</div>
-
-                <!-- Row 3 -->
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">11</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">12</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">13</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">14</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">15</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">16</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">17</div>
-
-                <!-- Row 4 -->
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">18</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">19</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">20</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">21</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">22</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">23</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">24</div>
-
-                <!-- Row 5 -->
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer bg-gray-200">25</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">26</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">27</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">28</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">29</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">30</div>
-                <div class="h-12 flex items-center justify-center text-gray-900 hover:bg-gray-100 rounded cursor-pointer">31</div>
+        <section class="center-content">
+          <div class="game-banner">
+            <div class="game-character">🐵</div>
+            <div class="bananas">
+              <div class="banana"></div>
+              <div class="banana"></div>
+              <div class="banana"></div>
+              <div class="banana"></div>
             </div>
-        </div>
+          </div>
 
-        <!-- Event List -->
-        <div class="space-y-4">
-            <!-- Event Items -->
-            <div class="bg-gray-300 rounded-lg p-4 flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <div class="w-16 h-16 bg-blue-200 rounded-lg flex items-center justify-center">
-                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                        </svg>
-                    </div>
-                    <span class="font-medium text-gray-900">A - ABC</span>
-                </div>
-                <span class="text-gray-600">1hr</span>
+          <div class="calendar">
+            <div class="calendar-header">
+              <button class="calendar-nav">‹</button>
+              <div class="calendar-title">2025年 五月</div>
+              <button class="calendar-nav">›</button>
             </div>
-
-            <div class="bg-gray-300 rounded-lg p-4 flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <div class="w-16 h-16 bg-blue-200 rounded-lg flex items-center justify-center">
-                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                        </svg>
-                    </div>
-                    <span class="font-medium text-gray-900">A - ABC</span>
-                </div>
-                <span class="text-gray-600">1hr</span>
+            <div class="calendar-grid">
+              <!-- 日曆內容將由 JavaScript 動態生成 -->
             </div>
+          </div>
+        </section>
 
-            <div class="bg-gray-300 rounded-lg p-4 flex items-center justify-center">
-                <button class="font-medium text-gray-900 hover:text-gray-700">新增學習任務</button>
-            </div>
-        </div>
-    </main>
+        <aside class="right-sidebar">
+          <div class="widget"></div>
+          <div class="widget"></div>
+          <div class="widget"></div>
+        </aside>
+      </main>
 
-    <script>
-        // 日曆互動功能
-        document.addEventListener('DOMContentLoaded', function() {
-            const calendarDays = document.querySelectorAll('.h-12');
-            
-            calendarDays.forEach(day => {
-                day.addEventListener('click', function() {
-                    if (this.textContent.trim()) {
-                        // 移除之前的選中狀態
-                        calendarDays.forEach(d => d.classList.remove('bg-blue-500', 'text-white'));
-                        // 添加選中狀態
-                        this.classList.add('bg-blue-500', 'text-white');
-                        this.classList.remove('hover:bg-gray-100');
-                    }
-                });
-            });
+      <button class="shop-button">🛒 商店</button>
+      <button class="more-button">
+        <div class="menu-dots">⋯</div>
+      </button>
+    </div>
 
-            // 月份切換功能
-            const prevBtn = document.querySelector('button');
-            const nextBtn = document.querySelectorAll('button')[1];
-            const monthYear = document.querySelector('h2');
-
-            let currentMonth = 5; // 五月
-            let currentYear = 2025;
-
-            const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
-
-            prevBtn.addEventListener('click', function() {
-                currentMonth--;
-                if (currentMonth < 1) {
-                    currentMonth = 12;
-                    currentYear--;
-                }
-                monthYear.textContent = `${currentYear}年 ${months[currentMonth - 1]}`;
-            });
-
-            nextBtn.addEventListener('click', function() {
-                currentMonth++;
-                if (currentMonth > 12) {
-                    currentMonth = 1;
-                    currentYear++;
-                }
-                monthYear.textContent = `${currentYear}年 ${months[currentMonth - 1]}`;
-            });
-        });
-    </script>
-</body>
+    <!-- JavaScript 引入 -->
+    <script src="main.js"></script>
+  </body>
 </html>

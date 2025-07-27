@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartLearn - 學習進度</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <header class="bg-gray-200 px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center">
+        <h1 class="text-xl font-bold text-gray-800">SmartLearn</h1>
+      </div>
+      <div class="flex items-center space-x-6">
+        <a
+          href="plan.html"
+          class="px-3 py-2 text-gray-600 font-medium flex items-center hover:bg-gray-300 rounded"
+        >
+          <svg
+            class="w-4 h-4 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-2.811-.46l-3.736.934 1.04-3.9A7.963 7.963 0 013 12c0-4.418 3.582-8 8-8s8 3.582 8 8z"
+            ></path>
+          </svg>
+          行事曆
+        </a>
+
+        <a
+          href="note.html"
+          class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded inline-block"
+        >
+          學習筆記
+        </a>
+        <div class="relative">
+          <button
+            id="progressBtn"
+            class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded flex items-center"
+          >
+            學習進度
+            <svg
+              class="w-4 h-4 ml-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+          <div
+            id="progressDropdown"
+            class="absolute right-0 mt-1 w-40 bg-white rounded shadow-lg hidden z-50"
+          >
+            <a
+              href="#"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >法文</a
+            >
+          </div>
+        </div>
+        <a
+          href="test.html"
+          class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded"
+        >
+          學習測驗
+        </a>
+        <div class="flex items-center">
+          <div
+            class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center"
+          >
+            <svg
+              class="w-5 h-5 text-white"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </div>
+          <svg
+            class="w-4 h-4 ml-1 text-gray-600"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
+      <div class="flex justify-between items-start">
+        <!-- Progress Chart Section -->
+        <div class="flex-1 mr-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">我的學習進度</h2>
+
+          <!-- Weekly Progress -->
+          <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="flex justify-between items-end space-x-4 mb-4">
+              <!-- Progress Bars -->
+              <div class="flex-1">
+                <div class="text-center mb-2">
+                  <div class="text-sm text-gray-600 mb-1">Monday</div>
+                  <div class="text-lg font-semibold text-gray-900">10%</div>
+                </div>
+                <div
+                  class="bg-gray-200 rounded-lg h-24 flex flex-col justify-end p-2"
+                >
+                  <div class="bg-blue-500 rounded h-3 mb-1"></div>
+                  <div class="bg-gray-300 rounded h-2 mb-1"></div>
+                  <div class="bg-gray-300 rounded h-2"></div>
+                </div>
+              </div>
+
+              <div class="flex-1">
+                <div class="text-center mb-2">
+                  <div class="text-sm text-gray-600 mb-1">Monday</div>
+                  <div class="text-lg font-semibold text-gray-900">20%</div>
+                </div>
+                <div
+                  class="bg-gray-200 rounded-lg h-32 flex flex-col justify-end p-2"
+                >
+                  <div class="bg-blue-500 rounded h-6 mb-1"></div>
+                  <div class="bg-gray-300 rounded h-2 mb-1"></div>
+                  <div class="bg-gray-300 rounded h-2"></div>
+                </div>
+              </div>
+
+              <div class="flex-1">
+                <div class="text-center mb-2">
+                  <div class="text-sm text-gray-600 mb-1">Monday</div>
+                  <div class="text-lg font-semibold text-gray-900">20%</div>
+                </div>
+                <div
+                  class="bg-gray-200 rounded-lg h-32 flex flex-col justify-end p-2"
+                >
+                  <div class="bg-blue-500 rounded h-6 mb-1"></div>
+                  <div class="bg-orange-400 rounded h-3 mb-1"></div>
+                  <div class="bg-gray-300 rounded h-2"></div>
+                </div>
+              </div>
+
+              <div class="flex-1">
+                <div class="text-center mb-2">
+                  <div class="text-sm text-gray-600 mb-1">Monday</div>
+                  <div class="text-lg font-semibold text-gray-900">30%</div>
+                </div>
+                <div
+                  class="bg-gray-200 rounded-lg h-40 flex flex-col justify-end p-2"
+                >
+                  <div class="bg-blue-500 rounded h-8 mb-1"></div>
+                  <div class="bg-orange-400 rounded h-4 mb-1"></div>
+                  <div class="bg-gray-300 rounded h-2"></div>
+                </div>
+              </div>
+
+              <div class="flex-1">
+                <div class="text-center mb-2">
+                  <div class="text-sm text-gray-600 mb-1">Monday</div>
+                  <div class="text-lg font-semibold text-gray-900">50%</div>
+                </div>
+                <div
+                  class="bg-gray-200 rounded-lg h-48 flex flex-col justify-end p-2"
+                >
+                  <div class="bg-blue-500 rounded h-12 mb-1"></div>
+                  <div class="bg-orange-400 rounded h-6 mb-1"></div>
+                  <div class="bg-gray-300 rounded h-3"></div>
+                </div>
+              </div>
+
+              <div class="flex-1">
+                <div class="text-center mb-2">
+                  <div class="text-sm text-gray-600 mb-1">Monday</div>
+                  <div class="text-lg font-semibold text-gray-900">1%</div>
+                </div>
+                <div
+                  class="bg-gray-200 rounded-lg h-24 flex flex-col justify-end p-2"
+                >
+                  <div class="bg-gray-300 rounded h-2 mb-1"></div>
+                  <div class="bg-gray-300 rounded h-2 mb-1"></div>
+                  <div class="bg-gray-300 rounded h-2"></div>
+                </div>
+              </div>
+
+              <div class="flex-1">
+                <div class="text-center mb-2">
+                  <div class="text-sm text-gray-600 mb-1">Monday</div>
+                  <div class="text-lg font-semibold text-gray-900">1%</div>
+                </div>
+                <div
+                  class="bg-gray-200 rounded-lg h-24 flex flex-col justify-end p-2"
+                >
+                  <div class="bg-gray-300 rounded h-2 mb-1"></div>
+                  <div class="bg-gray-300 rounded h-2 mb-1"></div>
+                  <div class="bg-gray-300 rounded h-2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Assistant Section -->
+        <div class="w-80">
+          <div class="bg-gray-200 rounded-lg p-6">
+            <div class="flex items-center mb-4">
+              <div
+                class="w-8 h-8 border-2 border-gray-400 rounded flex items-center justify-center mr-2"
+              >
+                <span class="text-sm">II</span>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900">AI助手建議</h3>
+            </div>
+
+            <div class="mb-4">
+              <div
+                class="w-12 h-12 bg-blue-200 rounded-full mb-4 flex items-center justify-center"
+              >
+                <svg
+                  class="w-6 h-6 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                  ></path>
+                </svg>
+              </div>
+              <p class="text-sm text-gray-700 mb-1">建議今天完成50%，很棒！</p>
+              <p class="text-sm text-gray-700">
+                建議在晚上11點前完成剩下的學習，
+              </p>
+              <p class="text-sm text-gray-700">仍可達成目標</p>
+            </div>
+
+            <div class="space-y-3">
+              <button
+                class="w-full bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm"
+              >
+                更換排程
+              </button>
+              <button
+                class="w-full bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm"
+              >
+                加入建議至行事曆
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 動態進度條效果
+        const progressBars = document.querySelectorAll(
+          ".bg-blue-500, .bg-orange-400"
+        );
+
+        progressBars.forEach((bar, index) => {
+          setTimeout(() => {
+            bar.style.opacity = "0";
+            bar.style.transform = "scaleY(0)";
+            bar.style.transition = "all 0.5s ease";
+
+            setTimeout(() => {
+              bar.style.opacity = "1";
+              bar.style.transform = "scaleY(1)";
+            }, 100);
+          }, index * 200);
+        });
+
+        // 按鈕點擊事件
+        document
+          .querySelector(".bg-gray-400")
+          .addEventListener("click", function () {
+            alert("更換排程功能");
+          });
+
+        document
+          .querySelectorAll(".bg-gray-400")[1]
+          .addEventListener("click", function () {
+            alert("加入建議至行事曆");
+          });
+      });
+    </script>
+  </body>
+</html>
