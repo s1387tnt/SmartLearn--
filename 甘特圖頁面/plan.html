@@ -170,6 +170,29 @@
           class="grid grid-cols-7 gap-2 text-center text-sm"
         ></div>
       </div>
+      <!-- To-Do Section -->
+      <div class="bg-white rounded-lg shadow-sm p-6 mt-4">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">📌 代辦事項</h3>
+
+        <!-- 輸入區 -->
+        <div class="flex items-center mb-4 gap-2">
+          <input
+            id="todoInput"
+            type="text"
+            placeholder="輸入代辦事項..."
+            class="flex-grow border border-gray-300 rounded px-4 py-2"
+          />
+          <button
+            id="addTodoBtn"
+            class="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-4 py-2 rounded"
+          >
+            新增
+          </button>
+        </div>
+
+        <!-- 清單區 -->
+        <ul id="todoList" class="space-y-2 text-gray-800"></ul>
+      </div>
     </main>
     <script src="plan.js"></script>
   </body>

@@ -72,4 +72,41 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   generateCalendar(currentYear, currentMonth);
+
+  const todoInput = document.getElementById("todoInput");
+  const addTodoBtn = document.getElementById("addTodoBtn");
+  const todoList = document.getElementById("todoList");
+
+  addTodoBtn.addEventListener("click", () => {
+    const text = todoInput.value.trim();
+    if (text === "") return;
+
+    const li = document.createElement("li");
+    li.className =
+      "flex items-center justify-between bg-gray-100 rounded px-4 py-2";
+
+    li.innerHTML = `
+      <div class="flex items-center gap-2">
+        <input type="checkbox" class="todo-checkbox" />
+        <span class="todo-text">${text}</span>
+      </div>
+      <button class="text-red-500 hover:text-red-700 delete-btn">✕</button>
+    `;
+
+    todoList.appendChild(li);
+    todoInput.value = "";
+
+    // 勾選變更樣式
+    const checkbox = li.querySelector(".todo-checkbox");
+    const textSpan = li.querySelector(".todo-text");
+    checkbox.addEventListener("change", () => {
+      textSpan.classList.toggle("line-through", checkbox.checked);
+      textSpan.classList.toggle("text-gray-400", checkbox.checked);
+    });
+
+    // 刪除按鈕功能
+    li.querySelector(".delete-btn").addEventListener("click", () => {
+      li.remove();
+    });
+  });
 });
