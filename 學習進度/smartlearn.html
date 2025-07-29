@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartLearn - 學習進度</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .progress-card {
+        background: #e5e7eb;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+      }
+      .progress-card.selected {
+        border: 3px solid #3b82f6;
+        background: #eff6ff;
+      }
+      .progress-item {
+        background: #9ca3af;
+        border-radius: 8px;
+        padding: 8px 12px;
+        margin: 4px 0;
+        color: white;
+        font-size: 12px;
+      }
+      .dialog-box {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transform: translateX(100%);
+        opacity: 0;
+        transition: all 0.5s ease;
+        position: fixed;
+        top: 100px;
+        right: 40px;
+        z-index: 50;
+        width: 320px; /* 固定寬度 */
+      }
+      .dialog-box.show {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      .progress-container {
+        transition: all 0.5s ease;
+        width: 100%;
+      }
+      .progress-container.compressed {
+        width: calc(100% - 350px); /* 減去對話框寬度加邊距 */
+        margin-right: 20px; /* 與對話框之間的間距 */
+      }
+      .chat-button {
+        transition: all 0.3s ease;
+      }
+      .chat-button:hover {
+        background: #d1d5db;
+        transform: scale(1.05);
+      }
+      .chat-button.active {
+        background: #3b82f6;
+        color: white;
+      }
+      /* 新增：讓卡片保持一行排列並填滿空間 */
+      .progress-grid {
+        display: flex;
+        gap: 16px;
+        width: 100%;
+      }
+      .progress-grid .progress-card {
+        flex: 1; /* 平均分配空間，填滿整行 */
+        min-width: 140px;
+      }
+      /* 當容器被壓縮時，讓卡片等比例縮小 */
+      .progress-container.compressed .progress-grid {
+        transform: scale(0.85); /* 整體縮放 85% */
+        transform-origin: left top;
+      }
+      /* 移除不需要的靜態對話框樣式 */
+    </style>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <!-- Header -->
+    <header class="bg-gray-200 px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="../主頁頁面/main.html" class="text-xl font-bold text-gray-800"
+          >SmartLearn</a
+        >
+      </div>
+      <div class="flex items-center space-x-6">
+        <!-- 聊天按鈕（圖示）放在行事曆左邊 -->
+        <span
+          id="chatButton"
+          class="chat-button px-3 py-2 text-gray-600 flex items-center rounded cursor-pointer"
+          onclick="toggleDialog()"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-2.811-.46l-3.736.934 1.04-3.9A7.963 7.963 0 013 12c0-4.418 3.582-8 8-8s8 3.582 8 8z"
+            ></path>
+          </svg>
+        </span>
+        <button
+          class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded"
+        >
+          行事曆
+        </button>
+        <button
+          class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded"
+        >
+          學習筆記
+        </button>
+        <button
+          class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded bg-gray-300"
+        >
+          學習進度
+        </button>
+        <button
+          class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded"
+        >
+          學習測驗
+        </button>
+        <div class="flex items-center">
+          <div
+            class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center"
+          >
+            <svg
+              class="w-5 h-5 text-white"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </div>
+          <svg
+            class="w-4 h-4 ml-1 text-gray-600"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="p-8">
+      <!-- Progress Page -->
+      <div id="progressPage">
+        <div class="mb-8">
+          <h2 class="text-3xl font-bold text-gray-800">學習進度</h2>
+        </div>
+        <!-- 簡化佈局：進度區域一開始滿版 -->
+        <div id="progressContainer" class="progress-container">
+          <h3 id="progressTitle" class="text-xl font-bold text-gray-800 mb-6">
+            我的學習進度
+          </h3>
+          <!-- 使用 grid 佈局替代 flex，讓卡片可以換行並填滿空間 -->
+          <div class="progress-grid">
+            <!-- Card 1 -->
+            <div
+              class="progress-card p-4 cursor-pointer"
+              onclick="selectCard(0)"
+            >
+              <div class="text-center mb-2">
+                <div class="text-sm text-gray-600">Monday</div>
+                <div class="text-2xl font-bold text-gray-800">10%</div>
+              </div>
+              <div class="space-y-1">
+                <div class="progress-item">A<br />1hr/5hr</div>
+                <div class="progress-item">A<br />1hr/5hr</div>
+                <div class="progress-item">A<br />1hr/5hr</div>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div
+              class="progress-card p-4 cursor-pointer"
+              onclick="selectCard(1)"
+            >
+              <div class="text-center mb-2">
+                <div class="text-sm text-gray-600">Tuesday</div>
+                <div class="text-2xl font-bold text-gray-800">20%</div>
+              </div>
+              <div class="h-20 flex items-center justify-center">
+                <svg
+                  class="w-8 h-8 text-blue-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div
+              class="progress-card p-4 cursor-pointer"
+              onclick="selectCard(2)"
+            >
+              <div class="text-center mb-2">
+                <div class="text-sm text-gray-600">Wednesday</div>
+                <div class="text-2xl font-bold text-gray-800">20%</div>
+              </div>
+              <div class="h-20 flex items-center justify-center">
+                <svg
+                  class="w-8 h-8 text-blue-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <!-- Card 4 -->
+            <div
+              class="progress-card p-4 cursor-pointer"
+              onclick="selectCard(3)"
+            >
+              <div class="text-center mb-2">
+                <div class="text-sm text-gray-600">Thursday</div>
+                <div class="text-2xl font-bold text-gray-800">30%</div>
+              </div>
+              <div class="h-20 flex items-center justify-center">
+                <svg
+                  class="w-8 h-8 text-blue-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <!-- Card 5 -->
+            <div
+              class="progress-card p-4 cursor-pointer"
+              onclick="selectCard(4)"
+            >
+              <div class="text-center mb-2">
+                <div class="text-sm text-gray-600">Friday</div>
+                <div class="text-2xl font-bold text-gray-800">50%</div>
+              </div>
+              <div class="h-20 flex items-center justify-center">
+                <svg
+                  class="w-8 h-8 text-blue-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <!-- Card 6 -->
+            <div
+              class="progress-card p-4 cursor-pointer"
+              onclick="selectCard(5)"
+            >
+              <div class="text-center mb-2">
+                <div class="text-sm text-gray-600">Saturday</div>
+                <div class="text-2xl font-bold text-gray-800">1%</div>
+              </div>
+              <div class="h-20 flex items-center justify-center">
+                <svg
+                  class="w-8 h-8 text-blue-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <!-- Card 7 -->
+            <div
+              class="progress-card p-4 cursor-pointer"
+              onclick="selectCard(6)"
+            >
+              <div class="text-center mb-2">
+                <div class="text-sm text-gray-600">Sunday</div>
+                <div class="text-2xl font-bold text-gray-800">1%</div>
+              </div>
+              <div class="h-20 flex items-center justify-center">
+                <svg
+                  class="w-8 h-8 text-blue-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <!-- 可以新增更多卡片 -->
+            <div
+              class="progress-card p-4 cursor-pointer"
+              onclick="selectCard(7)"
+            >
+              <div class="text-center mb-2">
+                <div class="text-sm text-gray-600">Week 2</div>
+                <div class="text-2xl font-bold text-gray-800">75%</div>
+              </div>
+              <div class="h-20 flex items-center justify-center">
+                <svg
+                  class="w-8 h-8 text-green-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Dialog Box - 固定定位的對話框 -->
+        <div id="dialogBox" class="dialog-box p-6">
+          <div class="flex items-center mb-4 pb-3 border-b border-gray-200">
+            <svg
+              class="w-5 h-5 mr-2 text-blue-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.955 8.955 0 01-2.811-.46l-3.736.934 1.04-3.9A7.963 7.963 0 013 12c0-4.418 3.582-8 8-8s8 3.582 8 8z"
+              ></path>
+            </svg>
+            <span class="font-bold text-lg text-gray-800">AI 助手</span>
+          </div>
+          <div id="chatMessages" class="mb-4 h-64 overflow-y-auto space-y-3">
+            <div class="bg-gray-100 rounded-lg p-3 text-sm text-gray-700">
+              歡迎！我是您的學習助手，有什麼問題可以問我 😊
+            </div>
+          </div>
+          <div class="flex space-x-2">
+            <input
+              type="text"
+              id="chatInput"
+              placeholder="輸入您的問題..."
+              class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              onkeypress="handleKeyPress(event)"
+            />
+            <button
+              onclick="sendMessage()"
+              class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    <script src="smart.js"></script>
+  </body>
+</html>
