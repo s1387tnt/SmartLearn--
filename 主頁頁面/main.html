@@ -442,9 +442,12 @@
       }
     </style>
   </head>
-  <div class="container">
+  <body>
+    <div class="container">
       <header class="header">
-        <button class="logo" onclick="window.location.reload()">SmartLearn</button>
+        <button class="logo" onclick="window.location.reload()">
+          SmartLearn
+        </button>
         <nav class="nav-menu">
           <a href="../行事曆頁面/plan.html" class="nav-item">行事曆</a>
           <a href="../筆記頁面/note.html" class="nav-item">學習筆記</a>
@@ -454,10 +457,25 @@
         <div class="user-profile">
           <button class="profile-button">👤</button>
           <div class="dropdown-menu">
-            <div class="dropdown-item">個人資料</div>
-            <div class="dropdown-item">設定</div>
+            <div
+              class="dropdown-item"
+              onclick="window.location.href='../個人資訊/myself.html'"
+            >
+              個人資料
+            </div>
+            <div
+              class="dropdown-item"
+              onclick="window.location.href='../設定/Notification settings.html'"
+            >
+              設定
+            </div>
             <div class="dropdown-item">說明</div>
-            <div class="dropdown-item">登出</div>
+            <div
+              class="dropdown-item"
+              onclick="window.location.href='../登入註冊/login.html'"
+            >
+              登出
+            </div>
           </div>
         </div>
       </header>
@@ -510,12 +528,22 @@
         </aside>
       </main>
 
-      <button class="shop-button">🛒 商店</button>
-      <button class="more-button">
+      <!-- 商店按鈕固定在左下角 -->
+      <button
+        class="shop-button"
+        onclick="window.location.href='../商店/store.html'"
+      >
+        🛒 商店
+      </button>
+
+      <!-- 更多按鈕固定在右下角 -->
+      <button
+        class="more-button"
+        onclick="window.location.href='../甘特圖頁面/Gantt chart.html'"
+      >
         <div class="menu-dots">⋯</div>
       </button>
     </div>
-
     <!-- JavaScript 引入 -->
     <script src="main.js"></script>
   </body>

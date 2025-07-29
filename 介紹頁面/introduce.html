@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartLearn - 階段式學習平台</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Microsoft JhengHei", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* 背景動畫元素 */
+      .bg-elements {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 0;
+      }
+
+      .floating-shape {
+        position: absolute;
+        opacity: 0.1;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .shape-1 {
+        width: 80px;
+        height: 80px;
+        background: #ff6b6b;
+        border-radius: 20px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+
+      .shape-2 {
+        width: 60px;
+        height: 60px;
+        background: #4ecdc4;
+        border-radius: 50%;
+        top: 60%;
+        right: 15%;
+        animation-delay: 2s;
+      }
+
+      .shape-3 {
+        width: 100px;
+        height: 100px;
+        background: #45b7d1;
+        border-radius: 15px;
+        top: 40%;
+        left: 80%;
+        animation-delay: 4s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(10deg);
+        }
+      }
+
+      /* 導航欄 */
+      nav {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .logo-icon {
+        display: none;
+      }
+
+      .login-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        padding: 12px 24px;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 16px;
+        backdrop-filter: blur(10px);
+      }
+
+      .login-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      /* 主要內容 */
+      .main-content {
+        position: relative;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 60px 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .content-left {
+        flex: 1;
+        padding-right: 60px;
+      }
+
+      .main-title {
+        color: white;
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 40px;
+      }
+
+      .features {
+        margin-bottom: 40px;
+      }
+
+      .feature-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 16px;
+      }
+
+      .feature-icon {
+        width: 24px;
+        height: 24px;
+        background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+        border-radius: 50%;
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+      }
+
+      .cta-button {
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 30px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .content-right {
+        flex: 1;
+        position: relative;
+      }
+
+      .app-preview {
+        position: relative;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .preview-image {
+        width: 100%;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease;
+      }
+
+      .preview-image:hover {
+        transform: translateY(-10px);
+      }
+
+      /* 裝飾元素 */
+      .decorative-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .deco-circle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        animation: pulse 4s ease-in-out infinite;
+      }
+
+      .deco-1 {
+        width: 200px;
+        height: 200px;
+        top: 10%;
+        right: 20%;
+        animation-delay: 0s;
+      }
+
+      .deco-2 {
+        width: 150px;
+        height: 150px;
+        bottom: 20%;
+        left: 10%;
+        animation-delay: 2s;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.2;
+          transform: scale(1.1);
+        }
+      }
+
+      /* 響應式設計 */
+      @media (max-width: 768px) {
+        nav {
+          padding: 15px 20px;
+        }
+
+        .main-content {
+          flex-direction: column;
+          padding: 40px 20px;
+          text-align: center;
+        }
+
+        .content-left {
+          padding-right: 0;
+          margin-bottom: 40px;
+        }
+
+        .main-title {
+          font-size: 36px;
+        }
+
+        .subtitle {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 背景裝飾元素 -->
+    <div class="bg-elements">
+      <div class="floating-shape shape-1"></div>
+      <div class="floating-shape shape-2"></div>
+      <div class="floating-shape shape-3"></div>
+    </div>
+
+    <!-- 導航欄 -->
+    <nav>
+      <div class="logo">SmartLearn</div>
+      <button
+        class="login-btn"
+        onclick="location.href='../登入註冊/login.html'"
+      >
+        登入
+      </button>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main class="main-content">
+      <div class="content-left">
+        <h1 class="main-title">智慧學習的最佳選擇</h1>
+        <p class="subtitle">
+          SmartLearn
+          是一個重點現代學習實踐的智慧化學習規劃平台。結合了階段式日課體驗，讓你用「班級共學分享」與「互動式日特圖排程工具」幫助你有效規劃、追蹤並完成每一個學習目標。
+        </p>
+
+        <div class="features">
+          <div class="feature-item">
+            <div class="feature-icon">✓</div>
+            階段式學習路徑 - 將大目標拆分為清晰的階段，追蹤視覺化卡片追蹤進度
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">✓</div>
+            班級分享與共學 - 加入或創建學習班級，與夥伴一起討論、互相激勵
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">✓</div>
+            互動式日特圖排程 - 專業的日特圖排程工具，一目瞭然地規劃學習任務
+          </div>
+        </div>
+
+        <button class="cta-button">開始學習之旅</button>
+      </div>
+
+      <div class="content-right">
+        <div class="app-preview">
+          <img
+            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDUwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MDAiIGhlaWdodD0iNDAwIiByeD0iMjAiIGZpbGw9InVybCgjZ3JhZGllbnQwX2xpbmVhcl8xXzEpIi8+CjxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9IjQ2MCIgaGVpZ2h0PSIzNjAiIHJ4PSIxNSIgZmlsbD0idXJsKCNncmFkaWVudDFfbGluZWFyXzFfMSkiLz4KPHJlY3QgeD0iNDAiIHk9IjQwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiByeD0iMTAiIGZpbGw9InVybCgjZ3JhZGllbnQyX2xpbmVhcl8xXzEpIi8+CjxyZWN0IHg9IjE4MCIgeT0iNDAiIHdpZHRoPSIyODAiIGhlaWdodD0iODAiIHJ4PSIxMCIgZmlsbD0idXJsKCNncmFkaWVudDNfbGluZWFyXzFfMSkiLz4KPGNpcmNsZSBjeD0iNDIwIiBjeT0iODAiIHI9IjE1IiBmaWxsPSIjNGVjZGM0Ii8+CjxyZWN0IHg9IjQwIiB5PSIxNDAiIHdpZHRoPSI0MjAiIGhlaWdodD0iMjIwIiByeD0iMTUiIGZpbGw9InVybCgjZ3JhZGllbnQ0X2xpbmVhcl8xXzEpIi8+CjxnIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjgiPgo8cmVjdCB4PSI2MCIgeT0iMTgwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI1Ii8+CjxyZWN0IHg9IjEyMCIgeT0iMTgwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI1Ii8+CjxyZWN0IHg9IjE4MCIgeT0iMTgwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI1Ii8+CjxyZWN0IHg9IjI0MCIgeT0iMTgwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI1Ii8+CjxyZWN0IHg9IjMwMCIgeT0iMTgwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI1Ii8+CjxyZWN0IHg9IjM2MCIgeT0iMTgwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI1Ii8+CjwvZz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQwX2xpbmVhcl8xXzEiIHgxPSIwIiB5MT0iMCIgeDI9IjUwMCIgeTI9IjQwMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjNjY3ZWVhIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzc2NGJhMiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50MV9saW5lYXJfMV8xIiB4MT0iMjAiIHkxPSIyMCIgeDI9IjQ4MCIgeTI9IjM4MCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDUpIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQyX2xpbmVhcl8xXzEiIHgxPSI0MCIgeTE9IjQwIiB4Mj0iMTYwIiB5Mj0iMTIwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiNmZjZiNmIiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNGVjZGM0Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQzX2xpbmVhcl8xXzEiIHgxPSIxODAiIHkxPSI0MCIgeDI9IjQ2MCIgeTI9IjEyMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMikiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMSkiLz4KPC9saW5lYXJHcmFkaWVudD4KPGxpbmVhckdyYWRpZW50IGlkPSJncmFkaWVudDRfbGluZWFyXzFfMSIgeDE9IjQwIiB5MT0iMTQwIiB4Mj0iNDYwIiB5Mj0iMzYwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9InJnYmEoMjU1LDI1NSwyNTUsMC4xNSkiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDUpIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+"
+            alt="SmartLearn App Preview"
+            class="preview-image"
+          />
+        </div>
+      </div>
+    </main>
+
+    <!-- 裝飾元素 -->
+    <div class="decorative-elements">
+      <div class="deco-circle deco-1"></div>
+      <div class="deco-circle deco-2"></div>
+    </div>
+    <script src="Gantt chart.js"></script>
+  </body>
+</html>
