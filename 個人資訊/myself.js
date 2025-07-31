@@ -46,8 +46,8 @@ navItems.forEach((item) => {
 });
 
 // 返回按鈕功能（回到首頁）
-document.getElementById("back-btn").addEventListener("click", () => {
-  switchPage("intro-page");
+document.getElementById("backButton").addEventListener("click", () => {
+  window.location.href = "../主頁頁面/main.html"; // 這裡改成你的主頁面檔案路徑
 });
 
 // 表單提交處理
