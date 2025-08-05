@@ -5,34 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SmartLearn</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+      html, body {
+        height: 100%;
+        width: 100vw;
+        overflow: hidden;  /* 重點！強制無scrollbar */
       }
-
       body {
         font-family: "Microsoft JhengHei", sans-serif;
         background-color: #f0f0f0;
-        padding: 20px;
+        padding: 0;
+        margin: 0;
+        height: 100%;
       }
-
       .container {
-        max-width: 1200px;
-        margin: 0 auto;
+        min-height: 100vh;
+        width: 100vw;
         background-color: #e8e8e8;
         border-radius: 15px;
-        padding: 20px;
         position: relative;
-        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+         padding-bottom: 0;  /* 不要設定padding-bottom */
       }
 
       /* Header */
       .header {
+        flex: 0 0 70px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 30px;
+        padding: 0 2vw;
+        height: 70px;
       }
 
       .logo {
@@ -42,16 +45,14 @@
         cursor: pointer;
         padding: 10px 15px;
         border-radius: 8px;
-        transition: all 0.3s ease;
+        transition: all 0.3s;
         border: none;
         background: none;
       }
-
       .logo:hover {
         background-color: rgba(0, 0, 0, 0.05);
         transform: translateY(-1px);
       }
-
       .nav-menu {
         display: flex;
         gap: 15px;
@@ -59,7 +60,6 @@
         margin-left: auto;
         margin-right: 50px;
       }
-
       .nav-item {
         color: #333;
         text-decoration: none;
@@ -68,15 +68,12 @@
         border-radius: 8px;
         transition: background-color 0.3s;
       }
-
       .nav-item:hover {
         background-color: rgba(0, 0, 0, 0.1);
       }
-
       .user-profile {
         position: relative;
       }
-
       .profile-button {
         width: 40px;
         height: 40px;
@@ -90,10 +87,7 @@
         border: none;
         transition: background-color 0.3s;
       }
-
-      .profile-button:hover {
-        background-color: #777;
-      }
+      .profile-button:hover { background-color: #777; }
 
       .dropdown-menu {
         position: absolute;
@@ -107,371 +101,194 @@
         opacity: 0;
         visibility: hidden;
         transform: translateY(-10px);
-        transition: all 0.3s ease;
+        transition: all 0.3s;
       }
-
       .dropdown-menu.show {
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
       }
-
       .dropdown-item {
         padding: 12px 16px;
         cursor: pointer;
         border-bottom: 1px solid #f0f0f0;
         transition: background-color 0.3s;
       }
-
       .dropdown-item:hover {
         background-color: #f5f5f5;
       }
-
       .dropdown-item:last-child {
         border-bottom: none;
       }
 
-      /* Main Content */
+      /* Main Content Grid */
       .main-content {
+        flex: 1 1 0;
+        min-height: 0;
         display: grid;
-        grid-template-columns: 180px 1fr 320px;
-        gap: 30px;
-        align-items: start;
-        min-height: calc(100vh - 200px);
+        grid-template-columns: minmax(110px, 17vw) 1fr minmax(160px, 23vw);
+        gap: 1.6vw;
+        align-items: stretch;
+        height: 0;
+        padding: 0 2vw 0 2vw;
+        margin-bottom: 2.4vw;  /* ←加這行，留底部空間 */
       }
-
-      /* Left Sidebar - Class Progress */
-      .left-sidebar {
-        position: relative;
-        height: 100%;
-      }
-
-      .class-card {
-        background-color: white;
-        border-radius: 15px;
-        padding: 30px 20px;
-        text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-        min-height: 180px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .shop-button {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        background-color: #ff6b35;
-        color: white;
-        border: none;
-        border-radius: 12px;
-        padding: 15px 20px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        z-index: 100;
-      }
-
-      .shop-button:hover {
-        background-color: #e55a2b;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-      }
-
-      .shop-button:active {
-        transform: translateY(0);
-      }
-
-      .class-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background-color: #f0f0f0;
-        border: 3px solid #ddd;
-        margin: 0 auto 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        color: #666;
-        font-size: 14px;
-      }
-
-      .class-progress {
-        margin-top: 15px;
-      }
-
-      .progress-text {
-        font-size: 16px;
-        color: #666;
-        margin-bottom: 15px;
-        font-weight: 500;
-      }
-
-      .progress-bar {
-        display: flex;
-        gap: 5px;
-        justify-content: center;
-        margin-bottom: 10px;
-      }
-
-      .progress-dot {
-        width: 14px;
-        height: 14px;
-        border-radius: 50%;
-        background-color: #ddd;
-      }
-
-      .progress-dot.active {
-        background-color: #4caf50;
-      }
-
-      .progress-label {
-        font-size: 13px;
-        color: #999;
-        margin-top: 5px;
-      }
-
-      /* Center - Calendar and Game */
-        .center-content {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            height: 100%;
-        }
-        
-        .game-banner {
-            background: linear-gradient(135deg, #87CEEB, #98FB98);
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            color: #333;
-            min-height: 100px;
-            position: relative;
-        }
-        
-        .progress-section {
-            /* 你原本的 display: flex 不變 */
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .game-character {
-            width: 48px;
-            height: 48px;
-            background-image: url('./monkey.png'); /* 替換為你的猴子圖片路徑 */
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
-            position: absolute;      /* 這行是關鍵！ */
-            top: -14px;              /* 微調讓猴子貼齊進度條，可再調整 */
-            left: 0;
-            z-index: 2;
-            transition: left 0.4s cubic-bezier(.41,.52,.32,1.18);
-        }
-        
-        /* 新增：讓進度條可以作為絕對定位容器 */
-        .progress-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            position: relative; /* 這行很重要 */
-            min-height: 48px;   /* 讓猴子有空間 */
-        }
-        
-        .progress-track {
-            height: 12px;
-            background-color: rgba(255,255,255,0.3);
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #66BB6A);
-            border-radius: 6px;
-            width: 65%;
-            transition: width 0.3s ease;
-        }
-        
-        .progress-text {
-            font-size: 14px;
-            color: #555;
-            font-weight: bold;
-            text-align: center;
-        }
-        
-        .progress-percentage {
-            font-size: 18px;
-            font-weight: bold;
-            color: #2E7D32;
-            min-width: 50px;
-            text-align: right;
-        }
-
-      .calendar {
-        background-color: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .calendar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-      }
-
-      .calendar-nav {
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        padding: 5px;
-        border-radius: 50%;
-        width: 35px;
-        height: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .calendar-nav:hover {
-        background-color: #f0f0f0;
-      }
-
-      .calendar-title {
-        font-size: 22px;
-        font-weight: bold;
-        color: #333;
-      }
-
-      .calendar-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 10px;
-        text-align: center;
-        flex: 1;
-      }
-
-      .calendar-day-header {
-        font-weight: bold;
-        color: #666;
-        padding: 15px 0;
-        font-size: 16px;
-      }
-
-      .calendar-day {
-        padding: 15px 8px;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 45px;
-      }
-
-      .calendar-day:hover {
-        background-color: #f0f0f0;
-      }
-
-      .calendar-day.today {
-        background-color: #4caf50;
-        color: white;
-      }
-
-      .calendar-day.selected {
-        background-color: #2196f3;
-        color: white;
-      }
-
-      .calendar-day.next-month {
-        color: #ccc;
-      }
-
-      /* Right Sidebar */
-      .right-sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        height: 100%;
-      }
-
-      .widget {
-        background-color: white;
-        border-radius: 15px;
-        padding: 35px;
-        flex: 1;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 150px;
-      }
-
-      .widget:last-child {
-        position: relative;
-      }
-
-      .more-button {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-        background-color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 12px 16px;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        z-index: 100;
-      }
-
-      .more-button:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        transform: translateY(-2px);
-      }
-
-      .menu-dots {
-        font-size: 20px;
-        color: #666;
-      }
-
-      /* Responsive */
-      @media (max-width: 768px) {
+      @media (max-width: 900px) {
         .main-content {
           grid-template-columns: 1fr;
-          gap: 20px;
+          padding: 0 1vw;
         }
-
-        .nav-menu {
+        .left-sidebar, .right-sidebar {
           display: none;
         }
       }
+      /* Sidebars & Card */
+      .left-sidebar, .right-sidebar {
+        min-width: 0; max-width: 100vw; height: 100%;
+        display: flex; flex-direction: column; gap: 1vw;
+      }
+      .class-card {
+        background-color: white;
+        border-radius: 15px;
+        padding: 2vw 1vw;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1 1 0;
+        min-height: 0;
+      }
+      .class-icon {
+        width: 48px; height: 48px;
+        border-radius: 50%; background-color: #f0f0f0;
+        border: 3px solid #ddd; margin: 0 auto 16px;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: bold; color: #666; font-size: 14px;
+      }
+      .class-progress { margin-top: 0; }
+      .progress-text { font-size: 13px; color: #666; margin-bottom: 8px; }
+      .progress-bar {
+        display: flex; gap: 5px; justify-content: center; margin-bottom: 4px;
+      }
+      .progress-dot {
+        width: 12px; height: 12px;
+        border-radius: 50%;
+        background-color: #ddd;
+      }
+      .progress-dot.active { background-color: #4caf50; }
+      .progress-label { font-size: 12px; color: #999; margin-top: 0; }
+
+      /* 商店按鈕固定左下 */
+      .shop-button {
+        position: fixed;
+        bottom: 24px; left: 24px;
+        background-color: #ff6b35; color: white; border: none;
+        border-radius: 12px; padding: 12px 18px;
+        font-size: 16px; font-weight: bold; cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1100;
+        display: flex; align-items: center; gap: 8px;
+      }
+      .shop-button:hover { background-color: #e55a2b; }
+      .shop-button:active { transform: translateY(1px); }
+
+      /* Center Content */
+      .center-content {
+        min-width: 0; height: 100%;
+        display: flex; flex-direction: column; gap: 1.2vw;
+      }
+      .game-banner {
+        background: linear-gradient(135deg, #87CEEB, #98FB98);
+        border-radius: 15px;
+        padding: 1.2vw 1vw;
+        display: flex; flex-direction: column; gap: 12px;
+        color: #333; min-height: 0; flex: 0 0 80px;
+      }
+      .progress-section { display: flex; align-items: center; gap: 18px; }
+      .progress-container {
+        flex: 1; display: flex; flex-direction: column; gap: 6px;
+        position: relative; min-height: 40px; justify-content: center;
+      }
+      .game-character {
+        width: 34px; height: 34px;
+        background-image: url('./monkey.png');
+        background-size: contain; background-repeat: no-repeat;
+        background-position: center;
+        image-rendering: pixelated;
+        position: absolute; top: -8px; left: 0; z-index: 2;
+        transition: left 0.4s cubic-bezier(.41,.52,.32,1.18);
+      }
+      .progress-track {
+        height: 10px; background-color: rgba(255,255,255,0.35);
+        border-radius: 6px; overflow: hidden; position: relative;
+      }
+      .progress-fill {
+        height: 100%; background: linear-gradient(90deg, #4CAF50, #66BB6A);
+        border-radius: 6px; width: 65%; transition: width 0.3s;
+      }
+      .progress-text { font-size: 13px; color: #555; text-align: center; }
+      .progress-percentage { font-size: 18px; font-weight: bold; color: #2E7D32; min-width: 42px; text-align: right; }
+
+      /* Calendar */
+      .calendar {
+        background-color: white;
+        border-radius: 15px;
+        padding: 1.5vw 1vw;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        flex: 1 1 0; min-height: 0; display: flex; flex-direction: column;
+      }
+      .calendar-header {
+        display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+      }
+      .calendar-nav {
+        background: none; border: none; font-size: 22px; cursor: pointer;
+        padding: 4px; border-radius: 50%; width: 30px; height: 30px;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .calendar-nav:hover { background-color: #f0f0f0; }
+      .calendar-title { font-size: 17px; font-weight: bold; color: #333; }
+      .calendar-grid {
+        display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+        text-align: center; flex: 1; min-height: 0;
+      }
+      .calendar-day-header {
+        font-weight: bold; color: #666; padding: 6px 0; font-size: 13px;
+      }
+      .calendar-day {
+        padding: 7px 2px; border-radius: 7px; cursor: pointer;
+        transition: background-color 0.2s; font-size: 13px;
+        display: flex; align-items: center; justify-content: center; min-height: 25px;
+        overflow: hidden; text-overflow: ellipsis;
+      }
+      .calendar-day:hover { background-color: #f0f0f0; }
+      .calendar-day.today { background-color: #4caf50; color: white; }
+      .calendar-day.selected { background-color: #2196f3; color: white; }
+      .calendar-day.next-month { color: #ccc; }
+
+      /* Right Sidebar */
+      .right-sidebar { min-width: 0; max-width: 100vw; height: 100%; gap: 1vw; }
+      .widget {
+        background-color: white; border-radius: 15px; padding: 1.5vw 1vw;
+        flex: 1 1 0; box-shadow: 0 4px 8px rgba(0,0,0,0.09);
+        display: flex; align-items: center; justify-content: center; min-height: 0; min-width: 0;
+        overflow: hidden;
+      }
+      .widget:last-child { position: relative; }
+      .more-button {
+        position: fixed; bottom: 24px; right: 24px; background-color: white;
+        border: none; border-radius: 8px; padding: 12px 16px; cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; z-index: 1100;
+      }
+      .more-button:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); transform: translateY(-2px);}
+      .menu-dots { font-size: 20px; color: #666; }
+
+      @media (max-width: 768px) {
+        .main-content { grid-template-columns: 1fr; gap: 1vw; }
+        .nav-menu { display: none; }
+      }
     </style>
   </head>
+
   <body>
     <div class="container">
       <header class="header">
