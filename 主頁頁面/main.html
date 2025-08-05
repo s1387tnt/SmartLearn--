@@ -241,59 +241,89 @@
       }
 
       /* Center - Calendar and Game */
-      .center-content {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        height: 100%;
-      }
-
-      .game-banner {
-        background: linear-gradient(45deg, #8b4513, #d2b48c);
-        border-radius: 15px;
-        padding: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        color: white;
-        min-height: 80px;
-      }
-
-      .game-character {
-        width: 50px;
-        height: 50px;
-        background-color: #d2691e;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-      }
-
-      .bananas {
-        display: flex;
-        gap: 10px;
-      }
-
-      .banana {
-        width: 30px;
-        height: 40px;
-        background-color: #ffd700;
-        border-radius: 15px 15px 5px 5px;
-        position: relative;
-      }
-
-      .banana::before {
-        content: "";
-        position: absolute;
-        top: -5px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 8px;
-        height: 10px;
-        background-color: #8b4513;
-        border-radius: 2px;
-      }
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+        }
+        
+        .game-banner {
+            background: linear-gradient(135deg, #87CEEB, #98FB98);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            color: #333;
+            min-height: 100px;
+            position: relative;
+        }
+        
+        .progress-section {
+            /* 你原本的 display: flex 不變 */
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .game-character {
+            width: 48px;
+            height: 48px;
+            background-image: url('./monkey.png'); /* 替換為你的猴子圖片路徑 */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            position: absolute;      /* 這行是關鍵！ */
+            top: -14px;              /* 微調讓猴子貼齊進度條，可再調整 */
+            left: 0;
+            z-index: 2;
+            transition: left 0.4s cubic-bezier(.41,.52,.32,1.18);
+        }
+        
+        /* 新增：讓進度條可以作為絕對定位容器 */
+        .progress-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative; /* 這行很重要 */
+            min-height: 48px;   /* 讓猴子有空間 */
+        }
+        
+        .progress-track {
+            height: 12px;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #66BB6A);
+            border-radius: 6px;
+            width: 65%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 14px;
+            color: #555;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .progress-percentage {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2E7D32;
+            min-width: 50px;
+            text-align: right;
+        }
 
       .calendar {
         background-color: white;
@@ -499,15 +529,17 @@
         </aside>
 
         <section class="center-content">
-          <div class="game-banner">
-            <div class="game-character">🐵</div>
-            <div class="bananas">
-              <div class="banana"></div>
-              <div class="banana"></div>
-              <div class="banana"></div>
-              <div class="banana"></div>
-            </div>
-          </div>
+                <div class="game-banner">
+                        <div class="progress-section">
+                            <div class="progress-container">
+                                <div class="game-character"></div>
+                                <div class="progress-track">
+                                    <div class="progress-fill"></div>
+                                </div>
+                            <div class="progress-text">65%</div>
+                        </div>
+                    </div>
+                </div>
 
           <div class="calendar">
             <div class="calendar-header">
