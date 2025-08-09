@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SmartLearn</title>
     <style>
-      html, body {
+      html,
+      body {
         height: 100%;
         width: 100vw;
-        overflow: hidden;  /* 重點！強制無scrollbar */
+        overflow: hidden; /* 重點！強制無scrollbar */
       }
       body {
         font-family: "Microsoft JhengHei", sans-serif;
@@ -25,7 +26,7 @@
         position: relative;
         display: flex;
         flex-direction: column;
-         padding-bottom: 0;  /* 不要設定padding-bottom */
+        padding-bottom: 0; /* 不要設定padding-bottom */
       }
 
       /* Header */
@@ -87,7 +88,9 @@
         border: none;
         transition: background-color 0.3s;
       }
-      .profile-button:hover { background-color: #777; }
+      .profile-button:hover {
+        background-color: #777;
+      }
 
       .dropdown-menu {
         position: absolute;
@@ -131,21 +134,27 @@
         align-items: stretch;
         height: 0;
         padding: 0 2vw 0 2vw;
-        margin-bottom: 2.4vw;  /* ←加這行，留底部空間 */
+        margin-bottom: 2.4vw; /* ←加這行，留底部空間 */
       }
       @media (max-width: 900px) {
         .main-content {
           grid-template-columns: 1fr;
           padding: 0 1vw;
         }
-        .left-sidebar, .right-sidebar {
+        .left-sidebar,
+        .right-sidebar {
           display: none;
         }
       }
       /* Sidebars & Card */
-      .left-sidebar, .right-sidebar {
-        min-width: 0; max-width: 100vw; height: 100%;
-        display: flex; flex-direction: column; gap: 1vw;
+      .left-sidebar,
+      .right-sidebar {
+        min-width: 0;
+        max-width: 100vw;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1vw;
       }
       .class-card {
         background-color: white;
@@ -160,131 +169,281 @@
         min-height: 0;
       }
       .class-icon {
-        width: 48px; height: 48px;
-        border-radius: 50%; background-color: #f0f0f0;
-        border: 3px solid #ddd; margin: 0 auto 16px;
-        display: flex; align-items: center; justify-content: center;
-        font-weight: bold; color: #666; font-size: 14px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: #f0f0f0;
+        border: 3px solid #ddd;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #666;
+        font-size: 14px;
       }
-      .class-progress { margin-top: 0; }
-      .progress-text { font-size: 13px; color: #666; margin-bottom: 8px; }
+      .class-progress {
+        margin-top: 0;
+      }
+      .progress-text {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+      }
       .progress-bar {
-        display: flex; gap: 5px; justify-content: center; margin-bottom: 4px;
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+        margin-bottom: 4px;
       }
       .progress-dot {
-        width: 12px; height: 12px;
+        width: 12px;
+        height: 12px;
         border-radius: 50%;
         background-color: #ddd;
       }
-      .progress-dot.active { background-color: #4caf50; }
-      .progress-label { font-size: 12px; color: #999; margin-top: 0; }
+      .progress-dot.active {
+        background-color: #4caf50;
+      }
+      .progress-label {
+        font-size: 12px;
+        color: #999;
+        margin-top: 0;
+      }
 
       /* 商店按鈕固定左下 */
       .shop-button {
         position: fixed;
-        bottom: 24px; left: 24px;
-        background-color: #ff6b35; color: white; border: none;
-        border-radius: 12px; padding: 12px 18px;
-        font-size: 16px; font-weight: bold; cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1); z-index: 1100;
-        display: flex; align-items: center; gap: 8px;
+        bottom: 24px;
+        left: 24px;
+        background-color: #ff6b35;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 18px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1100;
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
-      .shop-button:hover { background-color: #e55a2b; }
-      .shop-button:active { transform: translateY(1px); }
+      .shop-button:hover {
+        background-color: #e55a2b;
+      }
+      .shop-button:active {
+        transform: translateY(1px);
+      }
 
       /* Center Content */
       .center-content {
-        min-width: 0; height: 100%;
-        display: flex; flex-direction: column; gap: 1.2vw;
+        min-width: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2vw;
       }
       .game-banner {
-        background: linear-gradient(135deg, #87CEEB, #98FB98);
+        background: linear-gradient(135deg, #87ceeb, #98fb98);
         border-radius: 15px;
         padding: 1.2vw 1vw;
-        display: flex; flex-direction: column; gap: 12px;
-        color: #333; min-height: 0; flex: 0 0 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        color: #333;
+        min-height: 0;
+        flex: 0 0 80px;
       }
-      .progress-section { display: flex; align-items: center; gap: 18px; }
+      .progress-section {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
       .progress-container {
-        flex: 1; display: flex; flex-direction: column; gap: 6px;
-        position: relative; min-height: 40px; justify-content: center;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        position: relative;
+        min-height: 40px;
+        justify-content: center;
       }
       .game-character {
-        width: 34px; height: 34px;
-        background-image: url('./monkey.png');
-        background-size: contain; background-repeat: no-repeat;
+        width: 34px;
+        height: 34px;
+        background-image: url("./monkey.png");
+        background-size: contain;
+        background-repeat: no-repeat;
         background-position: center;
         image-rendering: pixelated;
-        position: absolute; top: -8px; left: 0; z-index: 2;
-        transition: left 0.4s cubic-bezier(.41,.52,.32,1.18);
+        position: absolute;
+        top: -8px;
+        left: 0;
+        z-index: 2;
+        transition: left 0.4s cubic-bezier(0.41, 0.52, 0.32, 1.18);
       }
       .progress-track {
-        height: 10px; background-color: rgba(255,255,255,0.35);
-        border-radius: 6px; overflow: hidden; position: relative;
+        height: 10px;
+        background-color: rgba(255, 255, 255, 0.35);
+        border-radius: 6px;
+        overflow: hidden;
+        position: relative;
       }
       .progress-fill {
-        height: 100%; background: linear-gradient(90deg, #4CAF50, #66BB6A);
-        border-radius: 6px; width: 65%; transition: width 0.3s;
+        height: 100%;
+        background: linear-gradient(90deg, #4caf50, #66bb6a);
+        border-radius: 6px;
+        width: 65%;
+        transition: width 0.3s;
       }
-      .progress-text { font-size: 13px; color: #555; text-align: center; }
-      .progress-percentage { font-size: 18px; font-weight: bold; color: #2E7D32; min-width: 42px; text-align: right; }
+      .progress-text {
+        font-size: 13px;
+        color: #555;
+        text-align: center;
+      }
+      .progress-percentage {
+        font-size: 18px;
+        font-weight: bold;
+        color: #2e7d32;
+        min-width: 42px;
+        text-align: right;
+      }
 
       /* Calendar */
       .calendar {
         background-color: white;
         border-radius: 15px;
         padding: 1.5vw 1vw;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-        flex: 1 1 0; min-height: 0; display: flex; flex-direction: column;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        flex: 1 1 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
       }
       .calendar-header {
-        display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
       }
       .calendar-nav {
-        background: none; border: none; font-size: 22px; cursor: pointer;
-        padding: 4px; border-radius: 50%; width: 30px; height: 30px;
-        display: flex; align-items: center; justify-content: center;
+        background: none;
+        border: none;
+        font-size: 22px;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      .calendar-nav:hover { background-color: #f0f0f0; }
-      .calendar-title { font-size: 17px; font-weight: bold; color: #333; }
+      .calendar-nav:hover {
+        background-color: #f0f0f0;
+      }
+      .calendar-title {
+        font-size: 17px;
+        font-weight: bold;
+        color: #333;
+      }
       .calendar-grid {
-        display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
-        text-align: center; flex: 1; min-height: 0;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+        text-align: center;
+        flex: 1;
+        min-height: 0;
       }
       .calendar-day-header {
-        font-weight: bold; color: #666; padding: 6px 0; font-size: 13px;
+        font-weight: bold;
+        color: #666;
+        padding: 6px 0;
+        font-size: 13px;
       }
       .calendar-day {
-        padding: 7px 2px; border-radius: 7px; cursor: pointer;
-        transition: background-color 0.2s; font-size: 13px;
-        display: flex; align-items: center; justify-content: center; min-height: 25px;
-        overflow: hidden; text-overflow: ellipsis;
+        padding: 7px 2px;
+        border-radius: 7px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 25px;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
-      .calendar-day:hover { background-color: #f0f0f0; }
-      .calendar-day.today { background-color: #4caf50; color: white; }
-      .calendar-day.selected { background-color: #2196f3; color: white; }
-      .calendar-day.next-month { color: #ccc; }
+      .calendar-day:hover {
+        background-color: #f0f0f0;
+      }
+      .calendar-day.today {
+        background-color: #4caf50;
+        color: white;
+      }
+      .calendar-day.selected {
+        background-color: #2196f3;
+        color: white;
+      }
+      .calendar-day.next-month {
+        color: #ccc;
+      }
 
       /* Right Sidebar */
-      .right-sidebar { min-width: 0; max-width: 100vw; height: 100%; gap: 1vw; }
+      .right-sidebar {
+        min-width: 0;
+        max-width: 100vw;
+        height: 100%;
+        gap: 1vw;
+      }
       .widget {
-        background-color: white; border-radius: 15px; padding: 1.5vw 1vw;
-        flex: 1 1 0; box-shadow: 0 4px 8px rgba(0,0,0,0.09);
-        display: flex; align-items: center; justify-content: center; min-height: 0; min-width: 0;
+        background-color: white;
+        border-radius: 15px;
+        padding: 1.5vw 1vw;
+        flex: 1 1 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.09);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 0;
+        min-width: 0;
         overflow: hidden;
       }
-      .widget:last-child { position: relative; }
-      .more-button {
-        position: fixed; bottom: 24px; right: 24px; background-color: white;
-        border: none; border-radius: 8px; padding: 12px 16px; cursor: pointer;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; z-index: 1100;
+      .widget:last-child {
+        position: relative;
       }
-      .more-button:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); transform: translateY(-2px);}
-      .menu-dots { font-size: 20px; color: #666; }
+      .more-button {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background-color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 16px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s;
+        z-index: 1100;
+      }
+      .more-button:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+      }
+      .menu-dots {
+        font-size: 20px;
+        color: #666;
+      }
 
       @media (max-width: 768px) {
-        .main-content { grid-template-columns: 1fr; gap: 1vw; }
-        .nav-menu { display: none; }
+        .main-content {
+          grid-template-columns: 1fr;
+          gap: 1vw;
+        }
+        .nav-menu {
+          display: none;
+        }
       }
     </style>
   </head>
@@ -296,7 +455,7 @@
           SmartLearn
         </button>
         <nav class="nav-menu">
-          <a href="../行事曆頁面/plan.html" class="nav-item">行事曆</a>
+          <a href="../行事曆頁面/plan.html" class="nav-item">任務</a>
           <a href="../筆記頁面/note.html" class="nav-item">學習筆記</a>
           <a href="../學習進度/smartlearn.html" class="nav-item">學習進度</a>
           <a href="../測驗頁面/test.html" class="nav-item">學習測驗</a>
@@ -346,17 +505,17 @@
         </aside>
 
         <section class="center-content">
-                <div class="game-banner">
-                        <div class="progress-section">
-                            <div class="progress-container">
-                                <div class="game-character"></div>
-                                <div class="progress-track">
-                                    <div class="progress-fill"></div>
-                                </div>
-                            <div class="progress-text">65%</div>
-                        </div>
-                    </div>
+          <div class="game-banner">
+            <div class="progress-section">
+              <div class="progress-container">
+                <div class="game-character"></div>
+                <div class="progress-track">
+                  <div class="progress-fill"></div>
                 </div>
+                <div class="progress-text">65%</div>
+              </div>
+            </div>
+          </div>
 
           <div class="calendar">
             <div class="calendar-header">
