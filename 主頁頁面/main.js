@@ -1,4 +1,4 @@
- // 模擬任務資料
+// 模擬任務資料
       const tasksData = [
         {
           id: 1,
@@ -358,12 +358,17 @@
       // 初始化日曆
       updateCalendar();
 
-      // 更新學習進度
+      // 香蕉被吃掉的狀態記錄
+      let eatenBananas = new Set();
+
+      // 修正後的學習進度更新函數（加入香蕉邏輯）
       function updateProgress(percentage) {
         const progressFill = document.querySelector(".progress-fill");
-        const progressText = document.querySelector(".game-banner .progress-text"); // 明確指定遊戲橫幅中的進度文字
+        const progressText = document.querySelector(".game-banner .progress-text");
         const gameCharacter = document.querySelector(".game-character");
         const progressContainer = document.querySelector(".progress-container");
+        const progressTrack = document.querySelector(".progress-track");
+        const bananas = document.querySelectorAll('.banana');
 
         // 更新進度條寬度和文字
         progressFill.style.width = percentage + "%";
@@ -373,15 +378,47 @@
 
         // 等待元素載入完成後計算位置
         setTimeout(() => {
-          if (progressContainer && gameCharacter) {
-            const containerWidth = progressContainer.offsetWidth;
-            const characterWidth = 48;
-
-            // 計算猴子應該在進度條上的位置
-            const progressPosition =
-              (percentage / 100) * (containerWidth - characterWidth);
-
-            gameCharacter.style.left = progressPosition + "px";
+          if (progressContainer && gameCharacter && progressTrack) {
+            // 使用進度軌道的實際寬度來計算位置
+            const trackWidth = progressTrack.offsetWidth;
+            const characterWidth = 34;
+            
+            // 關鍵修正：讓猴子的中心點對準進度條的末端
+            // 猴子位置 = (進度百分比 / 100) * 軌道寬度 - (猴子寬度/2)
+            const progressPixels = (percentage / 100) * trackWidth;
+            const adjustedPosition = Math.max(characterWidth / 2, progressPixels - characterWidth / 2);
+            
+            gameCharacter.style.left = adjustedPosition + 'px';
+            
+            // 香蕉邏輯
+            bananas.forEach(banana => {
+              const bananaPosition = parseInt(banana.getAttribute('data-position'));
+              
+              // 如果猴子的進度超過或等於香蕉位置，且該香蕉還沒被吃掉
+              if (percentage >= bananaPosition && !eatenBananas.has(bananaPosition)) {
+                // 標記為已吃掉
+                eatenBananas.add(bananaPosition);
+                banana.classList.add('eaten');
+                
+                // 播放吃掉動畫效果
+                console.log(`🐵 猴子吃掉了在 ${bananaPosition}% 位置的香蕉！`);
+                
+                // 400毫秒後完全隱藏
+                setTimeout(() => {
+                  banana.style.display = 'none';
+                }, 400);
+              }
+              
+              // 如果進度回退，重新顯示香蕉
+              if (percentage < bananaPosition && eatenBananas.has(bananaPosition)) {
+                eatenBananas.delete(bananaPosition);
+                banana.classList.remove('eaten');
+                banana.style.display = 'block';
+                banana.style.opacity = '1';
+                banana.style.transform = 'translateX(-50%)';
+                console.log(`🍌 重新顯示在 ${bananaPosition}% 位置的香蕉`);
+              }
+            });
           }
         }, 50);
       }
@@ -400,13 +437,23 @@
 
       // 測試進度變化（演示用，實際使用時可以刪除）
       setTimeout(() => {
-        let testProgress = 65;
+        let testProgress = 10;
         const progressTest = setInterval(() => {
+          updateProgress(testProgress);
+          console.log(`當前進度: ${testProgress}%`);
+          
           testProgress += 10;
           if (testProgress > 100) {
             testProgress = 10;
+            // 重置香蕉狀態
+            eatenBananas.clear();
+            document.querySelectorAll('.banana').forEach(banana => {
+              banana.classList.remove('eaten');
+              banana.style.display = 'block';
+              banana.style.opacity = '1';
+              banana.style.transform = 'translateX(-50%)';
+            });
           }
-          updateProgress(testProgress);
         }, 2000);
       }, 1000);
 
