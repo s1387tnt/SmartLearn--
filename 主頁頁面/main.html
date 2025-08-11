@@ -156,59 +156,335 @@
         flex-direction: column;
         gap: 1vw;
       }
-      .class-card {
+      /* 任務列表樣式 */
+      .task-card {
         background-color: white;
         border-radius: 15px;
-        padding: 2vw 1vw;
-        text-align: center;
+        padding: 1.5vw 1vw;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
-        justify-content: center;
         flex: 1 1 0;
         min-height: 0;
+        overflow-y: auto;
       }
-      .class-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background-color: #f0f0f0;
-        border: 3px solid #ddd;
-        margin: 0 auto 16px;
+      .task-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f0f0f0;
+      }
+      .task-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin: 0;
+      }
+      .task-count {
+        background-color: #4caf50;
+        color: white;
+        border-radius: 12px;
+        padding: 4px 8px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      
+      .task-list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        min-height: 0;
+      }
+      .task-item {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 12px;
+        border-left: 4px solid #4caf50;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+      .task-item:hover {
+        background-color: #e8f5e8;
+        transform: translateX(3px);
+      }
+      .task-item.completed {
+        border-left-color: #ffc107;
+        background-color: #fff8e1;
+      }
+      .task-item.completed:hover {
+        background-color: #ffecb3;
+      }
+      
+      .task-name {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 5px;
+        font-size: 14px;
+      }
+      .task-description {
+        color: #666;
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+      .task-progress {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .task-progress-bar {
+        flex: 1;
+        height: 6px;
+        background-color: #e0e0e0;
+        border-radius: 3px;
+        overflow: hidden;
+        margin-right: 8px;
+      }
+      .task-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #4caf50, #66bb6a);
+        border-radius: 3px;
+        transition: width 0.3s;
+      }
+      .task-progress-text {
+        font-size: 11px;
+        font-weight: bold;
+        color: #4caf50;
+      }
+      
+      .task-reward {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .task-coins {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: #ff9800;
+        font-weight: bold;
+        font-size: 12px;
+      }
+      .task-status {
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: bold;
+      }
+      .task-status.available {
+        background-color: #4caf50;
+        color: white;
+      }
+      .task-status.in-progress {
+        background-color: #2196f3;
+        color: white;
+      }
+      .task-status.completed {
+        background-color: #ffc107;
+        color: #333;
+      }
+
+      /* 好友列表觸發按鈕固定在左側 */
+      .friends-trigger-button {
+        position: fixed;
+        top: 30%;
+        left: 0;
+        transform: translateY(-50%);
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 0 12px 12px 0;
+        padding: 8px 12px;
+        cursor: pointer;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+        z-index: 1100;
+        transition: all 0.3s;
+        width: 45px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: bold;
-        color: #666;
-        font-size: 14px;
+        font-size: 20px;
       }
-      .class-progress {
-        margin-top: 0;
+      .friends-trigger-button:hover {
+        background-color: #45a049;
+        left: 5px;
+        box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
       }
-      .progress-text {
-        font-size: 13px;
-        color: #666;
-        margin-bottom: 8px;
+      .friends-trigger-text {
+        display: none;
       }
-      .progress-bar {
+
+      /* 自訂上下留白（可自行調整） */
+      :root {
+        --friends-gap: 24px;   /* 上下各留 24px */
+        --friends-left: 24px;  /* 距離左邊 24px，看起來更像浮窗 */
+      }
+
+      /* 好友列表側邊視窗：左側滑出、上下留白、不佔滿全高 */
+      .friends-sidebar {
+        position: fixed;
+        top: var(--friends-gap);
+        left: calc(-400px - var(--friends-left)); /* 初始藏到左邊，連同左邊距一起算進去 */
+        width: 400px;
+        height: calc(100vh - calc(var(--friends-gap) * 2));
+        background-color: #fff;
+        box-shadow: 4px 12px 30px rgba(0,0,0,.15);
+        border-radius: 16px;          /* 有圓角更像浮動面板 */
+        transition: left .3s ease-in-out;
+        z-index: 2000;
         display: flex;
-        gap: 5px;
-        justify-content: center;
-        margin-bottom: 4px;
+        flex-direction: column;
       }
-      .progress-dot {
-        width: 12px;
-        height: 12px;
+
+      .friends-sidebar.show {
+        left: var(--friends-left);    /* 開啟時，離左側一點距離，不貼邊 */
+      }
+
+      /* 想要更柔和的遮罩，可以稍微淡一點加點模糊 */
+      .friends-sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0,0,0,.35);
+        backdrop-filter: blur(1px);
+        z-index: 1999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all .3s;
+      }
+      .friends-sidebar-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* 小螢幕時仍可改為全高滿版（可選） */
+      @media (max-width: 640px) {
+        :root { --friends-gap: 0; --friends-left: 0; }
+        .friends-sidebar {
+          border-radius: 0;
+          width: 88vw; /* 或 100vw 想要滿版就改 */
+          left: -100vw;
+          height: 100vh;
+          top: 0;
+        }
+        .friends-sidebar.show { left: 0; }
+      }
+
+
+      /* 好友列表標題區 */
+      .friends-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+        background-color: #f5f5f5;
+        color: white;
+      }
+      .friends-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+      }
+      .close-friends-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.3s;
+      }
+      .close-friends-btn:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+
+      /* 好友列表內容 */
+      .friends-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+      }
+      .friend-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      .friend-item:last-child {
+        border-bottom: none;
+      }
+      .friend-avatar {
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         background-color: #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-size: 20px;
+        color: white;
+        font-weight: bold;
       }
-      .progress-dot.active {
-        background-color: #4caf50;
+      .friend-info {
+        flex: 1;
       }
-      .progress-label {
+      .friend-name {
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+      }
+      .friend-status {
         font-size: 12px;
         color: #999;
-        margin-top: 0;
+      }
+      .online {
+        color: #4caf50;
+      }
+      .offline {
+        color: #999;
+      }
+
+      /* 好友列表底部按鈕 */
+      .friends-actions {
+        padding: 20px;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 10px;
+      }
+      .friend-action-btn {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+      }
+      .add-friend-btn {
+        background-color: #4caf50;
+        color: white;
+      }
+      .add-friend-btn:hover {
+        background-color: #45a049;
+        transform: translateY(-1px);
+      }
+      .friend-requests-btn {
+        background-color: #2196f3;
+        color: white;
+      }
+      .friend-requests-btn:hover {
+        background-color: #1976d2;
+        transform: translateY(-1px);
       }
 
       /* 商店按鈕固定左下 */
@@ -297,11 +573,6 @@
         border-radius: 6px;
         width: 65%;
         transition: width 0.3s;
-      }
-      .progress-text {
-        font-size: 13px;
-        color: #555;
-        text-align: center;
       }
       .progress-percentage {
         font-size: 18px;
@@ -444,6 +715,10 @@
         .nav-menu {
           display: none;
         }
+        .friends-sidebar {
+          width: 90vw;
+          left: -90vw;
+        }
       }
     </style>
   </head>
@@ -455,7 +730,7 @@
           SmartLearn
         </button>
         <nav class="nav-menu">
-          <a href="../行事曆頁面/plan.html" class="nav-item">任務</a>
+          <a href="../行事曆頁面/plan.html" class="nav-item">新增學習目標</a>
           <a href="../筆記頁面/note.html" class="nav-item">學習筆記</a>
           <a href="../學習進度/smartlearn.html" class="nav-item">學習進度</a>
           <a href="../測驗頁面/test.html" class="nav-item">學習測驗</a>
@@ -488,18 +763,13 @@
 
       <main class="main-content">
         <aside class="left-sidebar">
-          <div class="class-card">
-            <div class="class-icon">Class A</div>
-            <div class="class-progress">
-              <div class="progress-text">好友列表</div>
-              <div class="progress-bar">
-                <div class="progress-dot active"></div>
-                <div class="progress-dot active"></div>
-                <div class="progress-dot active"></div>
-                <div class="progress-dot"></div>
-                <div class="progress-dot"></div>
-              </div>
-              <div class="progress-label">Progress</div>
+          <div class="task-card">
+            <div class="task-header">
+              <h3 class="task-title">📋 任務</h3>
+              <span class="task-count">5</span>
+            </div>
+            <div class="task-list" id="taskList">
+              <!-- 任務列表將由 JavaScript 動態生成 -->
             </div>
           </div>
         </aside>
@@ -536,6 +806,31 @@
         </aside>
       </main>
 
+      <!-- 好友列表觸發按鈕固定在左側 -->
+      <button class="friends-trigger-button" id="friendsListTrigger">
+        👥
+      </button>
+
+      <!-- 好友列表側邊視窗 -->
+      <div class="friends-sidebar-overlay" id="friendsOverlay"></div>
+      <div class="friends-sidebar" id="friendsSidebar">
+        <div class="friends-header">
+          
+          <button class="close-friends-btn" id="closeFriendsBtn">×</button>
+        </div>
+        <div class="friends-content" id="friendsContent">
+          <!-- 好友列表將由 JavaScript 動態生成 -->
+        </div>
+        <div class="friends-actions">
+          <button class="friend-action-btn add-friend-btn" id="addFriendBtn">
+            新增好友
+          </button>
+          <button class="friend-action-btn friend-requests-btn" id="friendRequestsBtn">
+            好友請求
+          </button>
+        </div>
+      </div>
+
       <!-- 商店按鈕固定在左下角 -->
       <button
         class="shop-button"
@@ -552,7 +847,10 @@
         <div class="menu-dots">⋯</div>
       </button>
     </div>
+
     <!-- JavaScript 引入 -->
     <script src="main.js"></script>
+
   </body>
 </html>
+
