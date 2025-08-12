@@ -40,34 +40,7 @@
         border-radius: 12px;
         aspect-ratio: 4/3;
       }
-      .subject-button {
-        background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 100%);
-        border-radius: 25px;
-        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-        transition: all 0.3s ease;
-      }
-      .arrow-button {
-        background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 100%);
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-        transition: all 0.3s ease;
-        cursor: pointer;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 20;
-      }
-      .main-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
-        position: relative;
-      }
+      
       /* 下拉選單 */
       .dropdown-menu {
         position: absolute;
@@ -103,226 +76,127 @@
       .user-profile {
         position: relative;
       }
+
+      /* 左側 <details> 摺疊樣式微調（旋轉箭頭） */
+      details summary { list-style: none; }
+      details summary::-webkit-details-marker { display: none; }
+      .caret {
+        transition: transform .2s ease;
+      }
+      details[open] .caret {
+        transform: rotate(180deg);
+      }
+
+      /* 左下角浮動按鈕群 */
+      .fab {
+        @apply px-4 py-2 rounded-full shadow-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition;
+      }
+      .fab-secondary {
+        @apply px-4 py-2 rounded-full shadow-lg bg-gray-700 text-white text-sm font-medium hover:bg-gray-800 transition;
+      }
     </style>
+    
   </head>
   <body class="bg-gray-100 min-h-screen">
     <!-- Header -->
     <header class="bg-gray-200 px-6 py-3 flex items-center justify-between">
       <div class="flex items-center">
-        <a href="../主頁頁面/main.html" class="text-xl font-bold text-gray-800"
-          >SmartLearn</a
-        >
+        <a href="../主頁頁面/main.html" class="text-xl font-bold text-gray-800">SmartLearn</a>
       </div>
       <div class="flex items-center space-x-6">
-        <a
-          href="../行事曆頁面/plan.html"
-          class="px-3 py-2 text-gray-600 font-medium flex items-center hover:bg-gray-300 rounded"
-        >
+        <a href="../行事曆頁面/plan.html" class="px-3 py-2 text-gray-600 font-medium flex items-center hover:bg-gray-300 rounded">
           新增學習目標
         </a>
-
-        <a
-          href="../筆記頁面/note.html"
-          class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded inline-block"
-        >
+        <a href="../筆記頁面/note.html" class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded inline-block">
           學習筆記
         </a>
         <div class="relative">
-          <button
-            id="progressBtn"
-            class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded flex items-center"
-          >
+          <button id="progressBtn" class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded flex items-center">
             學習進度
-            <svg
-              class="w-4 h-4 ml-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              />
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
           </button>
-          <div
-            id="progressDropdown"
-            class="absolute right-0 mt-1 w-40 bg-white rounded shadow-lg hidden z-50"
-          >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >法文</a
-            >
+          <div id="progressDropdown" class="absolute right-0 mt-1 w-40 bg-white rounded shadow-lg hidden z-50">
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">法文</a>
           </div>
         </div>
-        <a
-          href="../測驗頁面/test.html"
-          class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded"
-        >
+        <a href="../測驗頁面/test.html" class="px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded">
           學習測驗
         </a>
         <div class="user-profile">
-          <button
-            class="profile-button px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded"
-          >
-            👤
-          </button>
+          <button class="profile-button px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded">👤</button>
           <div class="dropdown-menu">
-            <a 
-              href="../個人資訊/myself.html" class="dropdown-item"
-              >個人資料
-            </a>
-            <a
-              href="../設定頁面/Notification Settings.html"
-              class="dropdown-item"
-              >設定
-            </a>
-            <a 
-              href="../登入註冊/login.html"
-              class="dropdown-item"
-              >登出
-            </a>
+            <a href="../個人資訊/myself.html" class="dropdown-item">個人資料</a>
+            <a href="../設定頁面/Notification Settings.html" class="dropdown-item">設定</a>
+            <a href="../登入註冊/login.html" class="dropdown-item">登出</a>
           </div>
         </div>
       </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Main -->
     <div class="flex min-h-screen">
       <!-- Sidebar -->
-      <div class="w-64 bg-white shadow-sm">
-        <div class="p-6">
-          <div class="space-y-4">
-            <div>
-              <h3 class="font-semibold text-gray-900 mb-2">收藏夾</h3>
+      <aside class="w-64 bg-white shadow-sm">
+        <div class="p-6 space-y-5">
+          <h3 class="font-semibold text-gray-900">收藏夾</h3>
+
+          <!-- 可摺疊：資安知識 -->
+          <details open class="group">
+            <summary class="flex items-center justify-between cursor-pointer select-none">
+              <span class="font-semibold text-gray-900">資安知識</span>
+              <svg class="w-4 h-4 text-gray-500 caret" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </summary>
+            <div class="mt-2 ml-3 space-y-1">
+              <a class="block text-sm text-gray-700 bg-gray-100 px-2 py-1 rounded">密碼學</a>
+              <a class="block text-sm text-gray-700 hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">漏洞分類</a>
             </div>
-            <div>
-              <div class="flex items-center justify-between">
-                <h3 class="font-semibold text-gray-900">資安知識</h3>
-                <svg
-                  class="w-4 h-4 text-gray-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
-                  ></path>
-                </svg>
-              </div>
-              <div class="ml-4 mt-2 space-y-1">
-                <div
-                  class="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded"
-                >
-                  密碼學
-                </div>
-                <div
-                  class="text-sm text-gray-600 hover:bg-gray-100 px-2 py-1 rounded cursor-pointer"
-                >
-                  漏洞分類
-                </div>
-              </div>
+          </details>
+
+          <!-- 可摺疊：語言學習 -->
+          <details class="group">
+            <summary class="flex items-center justify-between cursor-pointer select-none">
+              <span class="font-semibold text-gray-900">語言學習</span>
+              <svg class="w-4 h-4 text-gray-500 caret" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </summary>
+            <div class="mt-2 ml-3 space-y-1">
+              <a class="block text-sm text-gray-700 hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">日文</a>
+              <a class="block text-sm text-gray-700 hover:bg-gray-100 px-2 py-1 rounded cursor-pointer">英文</a>
             </div>
-            <div>
-              <div class="flex items-center justify-between">
-                <h3 class="font-semibold text-gray-900">語言學習</h3>
-                <svg
-                  class="w-4 h-4 text-gray-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
-                  ></path>
-                </svg>
-              </div>
-              <div class="ml-4 mt-2 space-y-1">
-                <div
-                  class="text-sm text-gray-600 hover:bg-gray-100 px-2 py-1 rounded cursor-pointer"
-                >
-                  日文
-                </div>
-                <div
-                  class="text-sm text-gray-600 hover:bg-gray-100 px-2 py-1 rounded cursor-pointer"
-                >
-                  英文
-                </div>
-              </div>
-            </div>
-          </div>
+          </details>
         </div>
-      </div>
+      </aside>
 
-      <!-- Main Content Area -->
-      <div class="flex-1 p-8">
-        <div class="bg-white rounded-lg shadow-sm p-8 min-h-96 relative">
-          <!-- Knowledge Tree -->
-          <div class="relative flex flex-col items-center">
-            <!-- 節點：例子 -->
-            <div class="bg-gray-300 rounded-lg px-6 py-3 mb-8">
-              <span class="font-medium text-gray-900">例子</span>
-            </div>
-
-            <!-- 節點：密碼學 -->
-            <div class="bg-gray-300 rounded-lg px-8 py-4 mb-8">
-              <span class="text-lg font-semibold text-gray-900">密碼學</span>
-            </div>
-
-            <!-- 分支節點 -->
-            <div class="flex items-start space-x-32 relative">
-              <!-- 左邊分支 -->
-              <div class="flex flex-col items-center">
-                <div class="bg-gray-300 rounded-lg px-6 py-3 mb-4">
-                  <span class="font-medium text-gray-900">定義</span>
-                </div>
-              </div>
-
-              <!-- 右邊分支 -->
-              <div class="flex flex-col items-center">
-                <div class="bg-gray-300 rounded-lg px-6 py-3 mb-4">
-                  <span class="font-medium text-gray-900">學習資源</span>
-                </div>
-                <div class="bg-gray-300 rounded-lg px-4 py-2 mt-4">
-                  <span class="text-sm font-medium text-gray-900"
-                    >推薦書籍</span
-                  >
-                </div>
-                <div class="bg-gray-300 rounded-lg px-4 py-2 mt-2">
-                  <span class="text-sm font-medium text-gray-900"
-                    >教學影片</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SVG 線條 -->
-          <svg
-            class="absolute inset-0 w-full h-full pointer-events-none"
-            style="z-index: -1"
-          >
-            <!-- 例子 → 密碼學 -->
-            <line x1="50%" y1="60" x2="50%" y2="120" class="tree-line" />
-            <!-- 密碼學 → 左右 -->
-            <line x1="50%" y1="180" x2="30%" y2="250" class="tree-line" />
-            <line x1="50%" y1="180" x2="70%" y2="250" class="tree-line" />
-            <!-- 學習資源 → 推薦書籍 → 教學影片 -->
-            <line x1="70%" y1="280" x2="70%" y2="340" class="tree-line" />
-            <line x1="70%" y1="340" x2="70%" y2="390" class="tree-line" />
-          </svg>
+      <!-- Note Area -->
+      <main class="flex-1 p-8">
+        <div class="bg-white rounded-lg shadow-sm p-6 h-full">
+          <!-- 純文字筆記紙 -->
+          <label for="noteArea" class="block text-sm text-gray-500 mb-2">文字筆記</label>
+          <textarea
+            id="noteArea"
+            placeholder="在這裡開始寫你的筆記..."
+            class="w-full h-[70vh] md:h-[78vh] resize-none border border-gray-200 rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent leading-7"
+          ></textarea>
         </div>
-      </div>
+      </main>
     </div>
+
+    <!-- 左下角浮動：新增檔案 / 新增資料夾 -->
+    <div class="fixed bottom-6 left-6 flex gap-3 z-50">
+      <button class="fab" aria-label="新增檔案" title="新增檔案">
+        ＋ 新增檔案
+      </button>
+      <button class="fab-secondary" aria-label="新增資料夾" title="新增資料夾">
+        📁 新增資料夾
+      </button>
+    </div>
+
+    <!-- 之後再接你的 JS（目前不需要） -->
     <script src="note.js"></script>
   </body>
 </html>
