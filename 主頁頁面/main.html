@@ -532,55 +532,86 @@
         min-height: 0;
         flex: 0 0 80px;
       }
-      .progress-section {
-        display: flex;
-        align-items: center;
-        gap: 18px;
+      /* ===== 猴子進度條樣式 ===== */
+      :root {
+        --track-h: 14px;         
+        --banana-size: 28px;     
+        --monkey-size: 38px;     
       }
-      .progress-container {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
+
+      .bar {
         position: relative;
-        min-height: 40px;
-        justify-content: center;
+        height: var(--track-h);
+        background: #e5e7eb;
+        border-radius: 999px;
+        overflow: visible;
+        box-shadow: inset 0 0 0 2px #ddd;
       }
-      .game-character {
-        width: 34px;
-        height: 34px;
-        background-image: url("./monkey.png");
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        image-rendering: pixelated;
-        position: absolute;
-        top: -8px;
-        left: 0;
-        z-index: 2;
-        transition: left 0.4s cubic-bezier(0.41, 0.52, 0.32, 1.18);
-      }
-      .progress-track {
-        height: 10px;
-        background-color: rgba(255, 255, 255, 0.35);
-        border-radius: 6px;
-        overflow: hidden;
-        position: relative;
-      }
-      .progress-fill {
+
+      .fill {
         height: 100%;
-        background: linear-gradient(90deg, #4caf50, #66bb6a);
+        width: 0%;
+        background: linear-gradient(90deg, #60a5fa, #3b82f6);
+        border-radius: 999px;
+        transition: none;
+      }
+
+      .monkey {
+        position: absolute;
+        top: -calc(var(--monkey-size) - var(--track-h) / 2);
+        transform: translate(-50%, 0);
+        width: var(--monkey-size);
+        height: var(--monkey-size);
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .bananas {
+        position: relative;
+        height: calc(var(--banana-size) + 4px);
+        margin-top: 6px;
+      }
+
+      .banana {
+        position: absolute;
+        bottom: 0;
+        width: var(--banana-size);
+        height: var(--banana-size);
+        transform: translate(-50%, 0);
+        transition: transform .18s ease, opacity .18s ease;
+      }
+
+      .banana.eaten {
+        opacity: 0;
+        transform: translate(-50%, 0) scale(.3) rotate(-20deg);
+      }
+
+      /* 控制按鈕樣式 */
+      .controls {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .controls button {
+        padding: 6px 10px;
         border-radius: 6px;
-        width: 65%;
-        transition: width 0.3s;
+        border: 1px solid #ddd;
+        background: #fff;
+        cursor: pointer;
+        font-size: 12px;
       }
-      .progress-percentage {
-        font-size: 18px;
-        font-weight: bold;
-        color: #2e7d32;
-        min-width: 42px;
-        text-align: right;
+      .controls button:hover {
+        background: #f1f5f9;
       }
+      .controls .pct {
+        margin-left: auto;
+        font-weight: 600;
+        font-size: 12px;
+      }
+
+
 
       /* Calendar */
       .calendar {
@@ -776,14 +807,21 @@
 
         <section class="center-content">
           <div class="game-banner">
-            <div class="progress-section">
-              <div class="progress-container">
-                <div class="game-character"></div>
-                <div class="progress-track">
-                  <div class="progress-fill"></div>
-                </div>
-                <div class="progress-text">65%</div>
-              </div>
+            <div class="bar" id="bar">
+              <div class="fill" id="fill"></div>
+              <img id="monkey" class="monkey" src="images/monkey.png" alt="monkey">
+            </div>
+            <!-- 香蕉標記（下方） -->
+            <div class="bananas" id="bananas"></div>
+
+            <!-- 控制按鈕區 -->
+            <div class="controls">
+              <button onclick="setProgress(0)">重置 0%</button>
+              <button onclick="bump(1)">+1%</button>
+              <button onclick="bump(5)">+5%</button>
+              <button onclick="bump(10)">+10%</button>
+              <button onclick="autoRun()">自動測試 (1%一步)</button>
+              <span class="pct">目前：<span id="now">0</span>%</span>
             </div>
           </div>
 
