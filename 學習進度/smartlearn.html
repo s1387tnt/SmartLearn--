@@ -75,6 +75,38 @@
         transform-origin: left top;
       }
       /* 移除不需要的靜態對話框樣式 */
+
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        min-width: 8rem;
+        z-index: 50;
+      }
+
+      .dropdown-menu.show {
+        display: block;
+      }
+
+      .dropdown-item {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        color: #374151; /* gray-700 */
+        font-size: 0.875rem;
+      }
+
+      .dropdown-item:hover {
+        background-color: #f3f4f6; /* gray-100 */
+      }
+
+      .user-profile {
+        position: relative;
+      }
+
     </style>
   </head>
   <body class="bg-gray-100 font-sans">
@@ -126,35 +158,34 @@
         >
           學習測驗
         </button>
-        <div class="flex items-center">
-          <div
-            class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center"
+        
+        <div class="user-profile">
+          <button
+            class="profile-button px-3 py-2 text-gray-600 font-medium hover:bg-gray-300 rounded"
           >
-            <svg
-              class="w-5 h-5 text-white"
-              fill="currentColor"
-              viewBox="0 0 20 20"
+            👤
+          </button>
+          <div class="dropdown-menu">
+            <div
+              class="dropdown-item"
+              onclick="window.location.href='../個人資訊/myself.html'"
             >
-              <path
-                fill-rule="evenodd"
-                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
+              個人資料
+            </div>
+            <div
+              class="dropdown-item"
+              onclick="window.location.href='../設定頁面/Notification settings.html'"
+            >
+              設定
+            </div>
+            <div
+              class="dropdown-item"
+              onclick="window.location.href='../登入註冊/login.html'"
+            >
+              登出
+            </div>
           </div>
-          <svg
-            class="w-4 h-4 ml-1 text-gray-600"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
         </div>
-      </div>
     </header>
 
     <!-- Main Content -->

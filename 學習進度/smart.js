@@ -1,5 +1,30 @@
 let dialogVisible = false;
 
+// 用戶下拉選單功能
+const profileButton = document.querySelector(".profile-button");
+const dropdownMenu = document.querySelector(".dropdown-menu");
+
+profileButton.addEventListener("click", (e) => {
+  e.stopPropagation();
+  dropdownMenu.classList.toggle("show");
+});
+
+document.addEventListener("click", () => {
+  dropdownMenu.classList.remove("show");
+});
+
+dropdownMenu.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
+const dropdownItems = document.querySelectorAll(".dropdown-item");
+dropdownItems.forEach((item) => {
+  item.addEventListener("click", () => {
+    console.log(`點擊了: ${item.textContent}`);
+    dropdownMenu.classList.remove("show");
+  });
+});
+
 function toggleDialog() {
     const dialogBox = document.getElementById('dialogBox');
     const progressContainer = document.getElementById('progressContainer');

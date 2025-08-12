@@ -61,27 +61,32 @@
         padding: 2rem;
         position: relative;
       }
+      /* 下拉選單 */
       .dropdown-menu {
-        display: none;
         position: absolute;
+        top: 110%;
         right: 0;
-        top: 100%;
-        background-color: white;
-        border-radius: 0.5rem;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        min-width: 8rem;
-        z-index: 50;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        display: none; /* 預設隱藏 */
+        flex-direction: column;
+        width: 160px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 999;
       }
 
       .dropdown-menu.show {
-        display: block;
+        display: flex;
       }
 
       .dropdown-item {
-        padding: 0.5rem 1rem;
+        display: block;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: #333;
         cursor: pointer;
-        color: #374151; /* gray-700 */
-        font-size: 0.875rem;
+        transition: background 0.2s;
       }
 
       .dropdown-item:hover {
@@ -159,12 +164,20 @@
             👤
           </button>
           <div class="dropdown-menu">
-            <a href="../個人資訊/myself.html" class="dropdown-item">
-              個人資料
+            <a 
+              href="../個人資訊/myself.html" class="dropdown-item"
+              >個人資料
             </a>
-            <div class="dropdown-item">設定</div>
-            <div class="dropdown-item">說明</div>
-            <div class="dropdown-item">登出</div>
+            <a
+              href="../設定頁面/Notification Settings.html"
+              class="dropdown-item"
+              >設定
+            </a>
+            <a 
+              href="../登入註冊/login.html"
+              class="dropdown-item"
+              >登出
+            </a>
           </div>
         </div>
       </div>
