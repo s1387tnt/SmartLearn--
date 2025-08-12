@@ -240,11 +240,25 @@ function generateCalendar() {
       dayElement.classList.add("today");
     }
 
+    // 修改點擊事件：跳轉到行事曆頁面並傳遞選中的日期
     dayElement.addEventListener("click", () => {
+      // 移除其他日期的選中狀態
       document.querySelectorAll(".calendar-day.selected").forEach((el) => {
         el.classList.remove("selected");
       });
       dayElement.classList.add("selected");
+
+      // 創建選中的日期物件
+      const selectedDate = new Date(currentYear, currentMonth, day);
+      
+      // 將選中的日期存儲到 localStorage 中，供行事曆頁面使用
+      const dateString = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
+      localStorage.setItem('selectedCalendarDate', dateString);
+      localStorage.setItem('selectedCalendarYear', selectedDate.getFullYear());
+      localStorage.setItem('selectedCalendarMonth', selectedDate.getMonth());
+      
+      // 跳轉到行事曆頁面
+      window.location.href = "../行事曆頁面/plan.html";
     });
 
     calendarGrid.appendChild(dayElement);
@@ -257,6 +271,27 @@ function generateCalendar() {
     const nextMonthDay = document.createElement("div");
     nextMonthDay.className = "calendar-day next-month";
     nextMonthDay.textContent = day;
+    
+    // 為下個月的日期也添加點擊事件
+    nextMonthDay.addEventListener("click", () => {
+      // 計算下個月的年月
+      let nextMonth = currentMonth + 1;
+      let nextYear = currentYear;
+      if (nextMonth > 11) {
+        nextMonth = 0;
+        nextYear++;
+      }
+      
+      const selectedDate = new Date(nextYear, nextMonth, day);
+      const dateString = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
+      
+      localStorage.setItem('selectedCalendarDate', dateString);
+      localStorage.setItem('selectedCalendarYear', selectedDate.getFullYear());
+      localStorage.setItem('selectedCalendarMonth', selectedDate.getMonth());
+      
+      window.location.href = "../行事曆頁面/plan.html";
+    });
+    
     calendarGrid.appendChild(nextMonthDay);
   }
 }
@@ -364,14 +399,15 @@ window.addEventListener("load", () => {
   setProgress(3); // 初始進度
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const calendarEl = document.querySelector(".calendar");
-  if (calendarEl) {
-    calendarEl.addEventListener("click", () => {
-      window.location.href = "../行事曆頁面/plan.html";
-    });
-  }
-});
+// 移除原來的日曆點擊跳轉事件，因為我們現在在日期點擊中處理跳轉
+// document.addEventListener("DOMContentLoaded", () => {
+//   const calendarEl = document.querySelector(".calendar");
+//   if (calendarEl) {
+//     calendarEl.addEventListener("click", () => {
+//       window.location.href = "../行事曆頁面/plan.html";
+//     });
+//   }
+// });
 
 // ESC鍵關閉好友列表
 document.addEventListener("keydown", (e) => {

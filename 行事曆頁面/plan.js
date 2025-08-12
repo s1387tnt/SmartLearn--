@@ -10,15 +10,44 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectedDateLabel = document.getElementById("selectedDateLabel");
 
   const today = new Date();
-  let currentMonth = today.getMonth(); // 0-based
-  let currentYear = today.getFullYear();
+  
+  // 檢查是否有從首頁傳來的日期資訊
+  let initialMonth = today.getMonth();
+  let initialYear = today.getFullYear();
+  let initialSelectedDate = new Date(initialYear, initialMonth, today.getDate());
+
+  // 從 localStorage 讀取選中的日期（如果有的話）
+  const selectedDateString = localStorage.getItem('selectedCalendarDate');
+  const selectedYear = localStorage.getItem('selectedCalendarYear');
+  const selectedMonth = localStorage.getItem('selectedCalendarMonth');
+
+  if (selectedDateString && selectedYear && selectedMonth) {
+    // 解析傳來的日期
+    const dateParts = selectedDateString.split('-');
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]) - 1; // JavaScript 月份是 0-based
+    const day = parseInt(dateParts[2]);
+    
+    // 設置初始顯示的月份和年份
+    initialYear = year;
+    initialMonth = month;
+    initialSelectedDate = new Date(year, month, day);
+    
+    // 清除 localStorage 中的資訊（避免下次進入時還是這個日期）
+    localStorage.removeItem('selectedCalendarDate');
+    localStorage.removeItem('selectedCalendarYear');
+    localStorage.removeItem('selectedCalendarMonth');
+  }
+
+  let currentMonth = initialMonth;
+  let currentYear = initialYear;
 
   // === 代辦：以日期為 key 的物件，存 { [YYYY-MM-DD]: Array<Todo> } ===
   // Todo = { id: string, text: string, done: boolean }
   const STORAGE_KEY = "smartlearn_todos_by_date";
 
   const state = {
-    selectedDate: new Date(currentYear, currentMonth, today.getDate()),
+    selectedDate: initialSelectedDate, // 使用初始選中的日期
     todosByDate: loadFromStorage(),
   };
 
@@ -302,4 +331,10 @@ document.addEventListener("DOMContentLoaded", () => {
   generateCalendar(currentYear, currentMonth);
   renderSelectedDateLabel();
   renderTodos();
+  
+  // 添加頁面加載完成後的提示（可選）
+  if (selectedDateString) {
+    // 如果是從首頁跳轉過來的，可以顯示一個簡短的提示
+    console.log(`已跳轉到 ${formatLabel(state.selectedDate)} 的代辦事項`);
+  }
 });
