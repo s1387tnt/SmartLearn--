@@ -170,9 +170,9 @@
     </div>
   </div>
 
-  <script src="config.js"></script>
+
+  <script src="/static/config.js"></script>
   <script>
-    //
     function showModal(msg, showSpinner = false) {
       document.getElementById("modalOverlay").style.display = "block";
       document.getElementById("modalMsg").innerHTML = msg;
@@ -371,7 +371,7 @@
     );
     //延遲的時間
     setTimeout(() => {
-      window.location.href = "tt.html";
+      window.location.href = `/static/tt.html?api_base=${encodeURIComponent(API_BASE)}`;
     }, 2000);
   };
 });

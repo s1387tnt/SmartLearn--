@@ -29,30 +29,29 @@
   </div>
   -->
 
-  <script src="config.js"></script>
-
+  <script src="/static/config.js"></script>
   <script>
-    console.log("API_BASE =", API_BASE);
-
-    fetch(`${API_BASE}/scores`)
-      .then(res => res.text())
-      .then(data => {
-        console.log("API 回應原始內容：", data);
-      })
-      .catch(err => {
-        console.error("API 呼叫失敗：", err);
-      });
-  </script>
-
-  <script>
+    const API_BASE_DEFAULT = API_BASE;
+    const urlParams = new URLSearchParams(window.location.search);
+    const API_BASE_PARAM = urlParams.get("api_base");
+    let apiBaseFinal = API_BASE_PARAM || API_BASE_DEFAULT;
     //
     let chart;
 
     // 讀取成績資料
     async function fetchScores() {
-      const res = await fetch(`${API_BASE}/scores`);
-      const data = await res.json();
-      return data.data;
+      const res = await fetch(`${apiBaseFinal}/scores`);
+      //console.log("HTTP status =", res.status);
+      const text = await res.text();
+      //console.log("API raw response =", text);
+
+      try {
+        const data = JSON.parse(text);
+        return data.data;
+      } catch (err) {
+        console.error("回應不是 JSON，無法解析：", err);
+        return [];
+      }
     }
 
     // 根據最新週數更新輸入框提示
@@ -70,9 +69,9 @@
 
     // 畫出圖表
     async function renderChart() {
-      console.log("API_BASE =", API_BASE);
+      //console.log("API_BASE =", API_BASE);
       const scores = await fetchScores();
-      console.log("scores from API =", scores);
+      //console.log("scores from API =", scores);
       const labels = scores.map(s => s.week);
       const values = scores.map(s => s.score);
 
@@ -131,6 +130,7 @@
     }
 
     // 新增一筆成績
+    /*
     async function addScore() {
       const weekInput = document.getElementById("week");
       const scoreInput = document.getElementById("score");
@@ -169,7 +169,7 @@
       
       const formattedWeek = `第${parseInt(match[1])}週`;
 
-      await fetch(`${API_BASE}/add_score`, {
+      await fetch(`${apiBaseFinal}/add_score`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ week: formattedWeek, score })
@@ -178,7 +178,7 @@
       scoreInput.value = "";
       await renderChart(); 
     }
-
+     */
     // 初始畫面
     renderChart();
   </script>
